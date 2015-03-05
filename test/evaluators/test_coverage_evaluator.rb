@@ -91,6 +91,6 @@ class TestCoverageEvaluator < TestCase
     assert_equal((@@multiterm_score + @@pref_score)*3, @@coverage_evaluator.get_annotation_score(a3))
     assert_equal((@@multiterm_score + @@syn_score)*3, @@coverage_evaluator.get_annotation_score(a4))
   end
-  
+
 end
 
