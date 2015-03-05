@@ -1,0 +1,382 @@
+ICO|Informed Consent Ontology|0
+GEOSPECIES|GeoSpecies Ontology|0
+TEO|Time Event Ontology|0
+TMO|Translational Medicine Ontology|0
+HEIO|Regional Healthcare System Interoperability and Information Exchange Measurement Ontology|0
+IDO|Infectious Disease Ontology|7
+FB-CV|FlyBase Controlled Vocabulary|0
+NIFDYS|Neuroscience Information Framework (NIF) Dysfunction Ontology|0
+ONTOAD|Bilingual Ontology of Alzheimer's Disease and Related Diseases|0
+TMA|Tissue Microarray Ontology|0
+HIVO004|HIVOntologymain.owl|0
+SIO|Semanticscience Integrated Ontology|0
+PSIMOD|Protein Modification Ontology|0
+RPO|Resource of Asian Primary Immunodeficiency Diseases (RAPID) Phenotype Ontology|0
+BIRNLEX|Biomedical Informatics Research Network Project Lexicon|0
+PW|Pathway Ontology|9
+OGSF|Ontology for Genetic Susceptibility Factor|0
+OBOREL|Open Biological and Biomedical Ontologies Relationship Types|0
+PHENOMEBLAST|PhenomeBLAST Ontology|0
+OPL|Ontology for Parasite LifeCycle|0
+BP-METADATA|BioPortal Metadata Ontology|0
+EDDA|EDDA Study Design Terminology|0
+TESTONTO|test_onto Ontology|0
+AURA|KB_Bio_101 Ontology|0
+GFO-BIO|General Formal Ontology for Biology|0
+FHHO|Family Health History Ontology|0
+ONTODM-KDD|Ontology of Data Mining Investigations|0
+OGMS|Ontology for General Medical Science|0
+BRO|Biomedical Resource Ontology|0
+APAONTO|Psychology Ontology|0
+PTO|Plant Trait Ontology|0
+MEDO|Mouse Experimental Design Ontology|0
+COGAT|Cognitive Atlas Ontology|0
+HL7|Health Level Seven Reference Implementation Model|0
+COGPO|Cognitive Paradigm Ontology|4
+AAO|Amphibian Gross Anatomy Ontology|0
+CANONT|Upper-Level Cancer Ontology |0
+CCONT|Cell Culture Ontology|0
+ONTOKBCF|Ontological Knowledge Base Model for Cystic Fibrosis|0
+EPILONT|Epilepsy Ontology|2
+EFO|Experimental Factor Ontology|5
+TM-OTHER-FACTORS|Traditional Medicine Other Factors Value Set|0
+RB|RegenBase ontology|0
+GENE-CDS|Genomic Clinical Decision Support Ontology|0
+ICF|International Classification of Functioning, Disability and Health|403
+LHN|Loggerhead Nesting Ontology|0
+PEO|Parasite Experiment Ontology|0
+VARIO|Variation Ontology|0
+OGMD|Ontology of Glucose Metabolism Disorder|0
+OCRE|Ontology of Clinical Research|0
+TM-SIGNS-AND-SYMPTS|Traditional Medicine Signs and Symptoms Value Set|0
+FIRE|Fire Ontology|0
+NTDO|Neglected Tropical Disease Ontology|0
+GLYCO|Glycomics Ontology|0
+RCTONT|Randomized Controlled Trials Ontology|0
+OPB|Ontology of Physics for Biology|0
+PAE|Plant Anatomy Ontology|0
+HIV|HIV Ontology|0
+SPD|Spider Ontology|0
+CANCO|Cancer Chemoprevention Ontology|0
+OMRSE|Ontology of Medically Related Social Entities|0
+TRAK|Taxonomy for Rehabilitation of Knee Conditions|0
+DDI|Ontology for Drug Discovery Investigations|0
+MEDDRA|Medical Dictionary for Regulatory Activities|98
+SITBAC|Situation-Based Access Control Ontology|0
+REX|Physico-Chemical Process Ontology|0
+NMR|NMR-Instrument Component of Metabolomics Investigations Ontology|0
+SuicidO|suicideo Ontology|0
+TOP-MENELAS|Menelas Project Top-Level Ontology|0
+CDAO|Comparative Data Analysis Ontology|0
+BHN|Biologie Hors Nomenclature|0
+TGMA|Mosquito Gross Anatomy Ontology|0
+IXNO|Interaction Ontology|6
+NDDF|National Drug Data File|1
+FLU|Influenza Ontology|0
+MEO|Metagenome and Microbes Environmental Ontology|0
+ICD9CM|ICD9CM|19
+CCON|Cerrado concepts and plant community dynamics Ontology|0
+ICNP|International Classification for Nursing Practice|106
+PR|Protein Ontology|19
+BIOMODELS|BioModels Ontology|0
+BDO|Bone Dysplasia Ontology|1
+BAO-GPCR|G Protein-Coupled Receptor BioAssays Ontology|0
+NIHSS|National Institutes of Health Stroke Scale Ontology|0
+OBIWS|Bioinformatics Web Service Ontology|0
+MAT|Minimal Anatomical Terminology|0
+MSTDE-FRE|Minimal Standard Terminology of Digestive Endoscopy, French|0
+TM-CONST|Traditional Medicine Constitution Value Set|0
+PMR|Physical Medicine and Rehabilitation Ontology|0
+SSE|Surgical Secondary Events Ontology|0
+CHEBI|Chemical Entities of Biological Interest Ontology|0
+FAO|Fungal Gross Anatomy Ontology|0
+QUDT|Quantities, Units, Dimensions, and Types Ontology|0
+ONTODM-CORE|Ontology of Core Data Mining Entities|0
+RNRMU|RNRMU|0
+BCO|Biological Collections Ontology|0
+MMO|Measurement Method Ontology|0
+TADS|Tick Gross Anatomy Ontology|0
+DCM|DICOM Controlled Terminology|0
+PATHLEX|Anatomic Pathology Lexicon|0
+XAO|Xenopus Anatomy and Development Ontology|0
+ERO|Eagle-I Research Resource Ontology|0
+WB-PHENOTYPE|C. elegans Phenotype Vocabulary|0
+EDAM|EDAM Ontology|0
+CNO|Computational Neuroscience Ontology|0
+ASDPTO|Autism Spectrum Disorder Phenotype Ontology|0
+TYPON|Microbial Typing Ontology|0
+CHEMINF|Chemical Information Ontology|0
+GFO|General Formal Ontology|0
+FBbi|Biological Imaging Methods Ontology|0
+RS|Rat Strain Ontology|1
+DOID|Human Disease Ontology|7
+CAO|Clusters of Orthologous Groups (COG) Analysis Ontology|0
+EHDA|Human Developmental Anatomy Ontology|0
+CHD|Congenital Heart Defects Ontology|0
+NGSONTO|NGS ontology|0
+MIXSCV|Minimal Information about any Sequence (MIxS) Controlled Vocabularies|0
+OAE|Ontology of Adverse Events|5
+ICPC2P|International Classification of Primary Care|215
+RSA|Reference Sequence Annotation Ontology|0
+PHARMGKB|PharmGKB Ontology|0
+PHARE|Pharmacogenomic Relationships Ontology|0
+XEO|XEML Environment Ontology|0
+RH-MESH|Robert Hoehndorf Version of MeSH|0
+TRON|Tribolium Ontology|0
+GRO-CPGA|Cereal Plant Gross Anatomy Ontology|0
+HUGO|Human Genome Organization Gene Symbols Ontology|0
+AMINO-ACID|Amino Acid Ontology|0
+SPTO|Solanaceae Phenotype Ontology|0
+WHO-ART|World Health Organization (WHO) Adverse Reaction Terminology|0
+BHO|Bleeding History Phenotype Ontology|0
+MP|Mammalian Phenotype Ontology|22
+BP|BioPAX Ontology of Biological Pathways|0
+MCCV|Microbial Culture Collection Vocabulary|0
+NCIT|National Cancer Institute Thesaurus|11
+AI-RHEUM|Artificial Intelligence Rheumatology Consultant System Ontology|0
+MDDB|Master Drug Data Base Clinical Drugs|0
+COSTART|Coding Symbols for a Thesaurus of Adverse Reaction Terms|0
+SPO|Skin Physiology Ontology|0
+MO|Microarray and Gene Expression Data Ontology|0
+NONRCTO|Non-Randomized Controlled Trials Ontology|0
+OntoVIP|Medical image simulation Ontology|0
+ADO|Alzheimer's disease ontology|1
+REXO|Regulation of Gene Expression Ontology|0
+BCTEO|Bone and Cartilage Tissue Engineering Ontology|0
+IDODEN|Dengue Fever Ontology|0
+LOINC|Logical Observation Identifier Names and Codes|23
+OGDI|Ontology for Genetic Disease Investigations|0
+DPO|Diabetes phenotypes ontology (ALPHA VERSION)|0
+pseudo|Pseudogene Ontology|0
+MPATH|Mouse Pathology Ontology|0
+HUPSON|Human Physiology Simulation Ontology|0
+IMGT-ONTOLOGY|Immunogenetics Ontology|0
+IMMDIS|Immune Disorder Ontology|0
+OMIT|Ontology for MicroRNA Target Prediction|0
+MESH|Medical Subject Headings|1142
+BIOMO|Biological Observation Matrix Ontology|0
+RNAO|RNA Ontology|0
+VO|Vaccine Ontology|20
+SEDI|Semantic DICOM Ontology|0
+CLO|Cell Line Ontology|0
+MCCL|Mahadevan Cell Line Ontology|0
+OGR|Ontology of Geographical Region|0
+ZFA|Zebrafish Anatomy and Development Ontology|0
+HCPCS|Healthcare Common Procedure Coding System|92
+ICD10CM|ICD10CM|1
+FIX|Physico-Chemical Methods and Properties Ontology|0
+FB-DV|Drosophila Development Ontology|0
+HAO|Hymenoptera Anatomy Ontology|10
+ICD10PCS|ICD10PCS|0
+PSDS|Plant Structure Development Stage Ontology|0
+LIPRO|Lipid Ontology|4
+CMO|Clinical Measurement Ontology|0
+OVAE|Ontology of Vaccine Adverse Events|0
+MSV|Metagenome Sample Vocabulary Ontology|0
+ICD10|ICD10|273
+ENVO|Environment Ontology|4
+RXNORM|RxNORM|65
+CRISP|Computer Retrieval of Information on Scientific Projects Thesaurus|0
+BTO|BRENDA Tissue and Enzyme Source Ontology|0
+GRO|Gene Regulation Ontology|2
+IDOMAL|Malaria Ontology|3
+CL|Cell Ontology|12
+TTO|Teleost Taxonomy Ontology|0
+CPTAC|CPTAC Proteomics Pipeline Infrastructure Ontology|0
+HINO|Human Interaction Network Ontology|0
+TAXRANK|Taxonomic Rank Vocabulary|0
+VHOG|Vertebrate Homologous Organ Group Ontology|0
+CABRO|Computer Assisted Brain Injury Rehabilitation Ontology|0
+WSIO|Web-Service Interaction Ontology|0
+HRDO|Disease core ontology applied to Rare Diseases|0
+PATO|Phenotypic Quality Ontology|4
+CTCAE|Common Terminology Criteria for Adverse Events|794
+APO|Ascomycete Phenotype Ontology|0
+NCBITAXON|National Center for Biotechnology Information (NCBI) Organismal Classification|0
+PPIO|Protein-Protein Interaction Ontology|0
+NIFSUBCELL|Neuroscience Information Framework (NIF) Subcellular Ontology|0
+MSTDE|Minimal Standard Terminology of Digestive Endoscopy|0
+SNOMEDCT|Systematized Nomenclature of Medicine Clinical Terms|52
+ONTODT|Ontology of General Purpose Datatypes|0
+NIFSTD|Neuroscience Information Framework (NIF) Standard Ontology|0
+SOY|Soy Ontology|0
+LDA|Ontology of Language Disorder in Autism|0
+NEUMORE|Neural Motor Recovery Ontology|0
+SWO|Software Ontology|2
+OBCS|Ontology of Biological and Clinical Statistics|0
+MEGO|Mobile Genetic Element Ontology|0
+MIRNAO|MicroRNA Ontology|0
+FB-SP|Fly Taxonomy|0
+RADLEX|Radiology Lexicon|8
+IDQA|Image and Data Quality Assessment Ontology|0
+GALEN|Galen Ontology|0
+NHSQI2009|NHS Quality Indicators Ontology|0
+OGG|Ontology of Genes and Genomes|0
+BRIDG|Biomedical Research Integrated Domain Group Model|0
+ICD11-BODYSYSTEM|Body System Terms from ICD11|0
+VIVO|VIVO Ontology for Researcher Discovery|0
+AERO|Adverse Event Reporting Ontology|0
+SBO|Systems Biology Ontology|0
+EHDAA|Human Developmental Anatomy Ontology|0
+CCO|Cell Cycle Ontology|6
+GAZ|Gazetteer Ontology|0
+VT|Vertebrate Trait Ontology|0
+ZEA|Maize Gross Anatomy Ontology|0
+OGI|Ontology for Genetic Interval|0
+CO|Crop Ontology|2
+ICECI|International Classification of External Causes of Injuries|0
+ONTOPNEUMO|Ontology of Pneumology|0
+PROVO|Provenance Ontology|3
+RCD|Read Codes Clinical Terms |0
+UO|Units of Measurement Ontology|0
+PDON|Parkinson's Disease Ontology|0
+BCGO|Breast Cancer Grading Ontology|0
+NEOMARK3|Neomark Oral Cancer Ontology|0
+IDOBRU|Brucellosis Ontology|2
+MCBCC|Breast Tissue Cell Lines Ontology|0
+ROLEO|Role Ontology|0
+ONL-MR-DA|Magnetic Resonance Dataset Acquisition Ontology|0
+DERMLEX|Dermatology Lexicon|0
+InterNano|InterNano Nanomanufacturing Taxonomy|0
+STY|Semantic Types Ontology|0
+BT|BioTop Ontology|0
+ONTOMA|Ontology of Alternative Medicine, French|0
+EMAP|Mouse Gross Anatomy and Development Ontology|0
+CSEO|Cigarette Smoke Exposure Ontology|0
+MS|Mass Spectrometry Ontology|0
+DIKB|Drug Interaction Knowledge Base Ontology|0
+FYPO|Fission Yeast Phenotype Ontology|0
+CMPO|Cellular microscopy phenotype ontology|0
+SHR|Student Health Record Ontology|0
+ONSTR|Ontology for Newborn Screening Follow-up and Translational Research|0
+MF|Mental Functioning Ontology|0
+GFVO|Genomic Feature and Variation Ontology|0
+XCO|Experimental Conditions Ontology|0
+VTO|Vertebrate Taxonomy Ontology|0
+WB-BT|C. elegans Gross Anatomy Vocabulary|0
+PMA|Portfolio Management Application Ontology|0
+SBOL|Synthetic Biology Open Language Visual Ontology|0
+SAO|Subcellular Anatomy Ontology|0
+NEMO|Neural ElectroMagnetic Ontology|0
+PTRANS|Pathogen Transmission Ontology|0
+CARO|Common Anatomy Reference Ontology|6
+UNITSONT|Units Ontology|0
+NEOMARK4|Neomark Oral Cancer Ontology|0
+NIGO|Neural-Immune Gene Ontology|0
+OBOE-SBC|Santa Barbara Coastal Observation Ontology|0
+ORTHO|Ortholog Ontology|0
+REPO|Reproductive Trait and Phenotype Ontology|0
+FLOPO|Flora Phenotype Ontology|0
+BSAO|Botryllus schlosseri anatomy and development ontology|0
+VSO|Vital Sign Ontology|0
+HC|Habronattus Courtship Ontology|0
+OMIM|Online Mendelian Inheritance in Man Ontology|0
+VANDF|Veterans Health Administration National Drug File|0
+INO|Interaction Network Ontology|0
+MAMO|Mathematical Modelling Ontology|0
+CSSO|Clinical Signs and Symptoms Ontology|0
+EP|Cardiac Electrophysiology Ontology|0
+SSO|Syndromic Surveillance Ontology|0
+ATO|Amphibian Taxonomy Ontology|0
+UBERON|Uber Anatomy Ontology|0
+MFOEM|Emotion Ontology|0
+ACGT-MO|Cancer Research and Management ACGT Master Ontology|0
+TOK|Terminological and Ontological Knowledge Resources Ontology|0
+MIXS|Minimal Information about any Sequence Ontology|0
+MFO|Medaka Fish Anatomy and Development Ontology|0
+ELIG|Eligibility Feature Hierarchy|0
+STATO|Statistics Ontology|0
+CHMO|Chemical Methods Ontology|0
+ECO|Evidence Codes Ontology|0
+PDO|Pathogenic Disease Ontology|0
+DOCCC|Diagnosis Ontology of Clinical Care Classification|0
+CPT|Current Procedural Terminology|1556
+ONL-DP|Dataset processing Ontology|0
+SYN|Sage Bionetworks Synapse Ontology|0
+SEP|Sample Processing and Separation Techniques Ontology|0
+EHDAA2|Human Developmental Anatomy Ontology|0
+AEO|Anatomical Entity Ontology|0
+PIERO|Enzyme Reaction Ontology for partial chemical perspectives|0
+ORDO|Orphanet Rare Disease Ontology|0
+RETO|Regulation of Transcription Ontology|0
+IAO|Information Artifact Ontology|6
+ADW|Animal Natural History and Life History Ontology|0
+OPE|Ontology of Physical Exercises|0
+KISAO|Kinetic Simulation Algorithm Ontology|2
+DINTO|The Drug-drug Interactions Ontology|0
+NPO|NanoParticle Ontology|3
+PVONTO|Pharmacovigilance Ontology|0
+HP|Human Phenotype Ontology|25
+CTX|Cerebrotendinous Xanthomatosis Ontology|0
+RXNO|Name Reaction Ontology|0
+BSPO|Spatial Ontology|0
+ABA-AMB|Allen Brain Atlas (ABA) Adult Mouse Brain Ontology|0
+MIRO|Mosquito Insecticide Resistance Ontology|0
+BNO|Bionutrition Ontology|0
+GRO-CPD|Cereal Plant Development Ontology|0
+TM-MER|Traditional Medicine Meridian Value Sets|0
+CO-WHEAT|Wheat Trait Ontology |0
+NIC|Nursing Interventions Classification|163
+DIAGONT|Diagnostic Ontology|1
+SWEET|Semantic Web for Earth and Environment Technology Ontology|0
+SNPO|Single-Nucleotide Polymorphism (SNP) Ontology|0
+CTONT|Epoch Clinical Trial Ontology|0
+ATMO|African Traditional Medicine Ontology|0
+PORO|Porifera Ontology|0
+FMA|Foundational Model of Anatomy|0
+SYMP|Symptom Ontology|0
+CBO|Cell Behavior Ontology|0
+NMOSP|NeuroMorpho.Org species ontology|0
+TEDDY|Terminology for the Description of Dynamics|0
+CPTH|Current Procedural Terminalogy Hierarchy|0
+CARELEX|Content Archive Resource Exchange Lexicon|0
+HPIO|Host Pathogen Interactions Ontology|0
+BAO|BioAssay Ontology|8
+MA|Mouse Adult Gross Anatomy Ontology|0
+RNPRIO|Research Network and Patient Registry Inventory Ontology|0
+CPRO|Computer-Based Patient Record Ontology|0
+ICPS|International Classification for Patient Safety|19
+suicideo|suicideonto Ontology|0
+NIFCELL|Neuroscience Information Framework (NIF) Cell Ontology|0
+CHEMBIO|Systems Chemical Biology and Chemogenomics Ontology |0
+TAO|Teleost Anatomy Ontology|0
+VSAO|Vertebrate Skeletal Anatomy Ontology|0
+OBI_BCGO|Beta Cell Genomics Ontology|0
+WB-LS|C. elegans Development Vocabulary|0
+DCO|Dispedia Core Ontology|0
+PROPREO|Proteomics Data and Process Provenance Ontology|0
+PCO|Population and Community Ontology|0
+SOPHARM|Suggested Ontology for Pharmacogenomics|0
+MEDLINEPLUS|MedlinePlus Health Topics|0
+HOM|Ontology of Homology and Related Concepts in Biology|0
+NDFRT|National Drug File Reference Terminology|25
+OOEVV|Ontology of Experimental Variables and Values|0
+NCCO|Nursing Care Coordination Ontology|0
+PHYLONT|Phylogenetic Ontology|0
+GO-EXT|Gene Ontology Extension|0
+QIBO|Quantitative Imaging Biomarker Ontology|0
+SO|Sequence Types and Features Ontology|0
+OBI|Ontology for Biomedical Investigations|12
+GCO|Genome Component Ontology|0
+PDQ|Physician Data Query Ontology|0
+FB-BT|Drosophila Gross Anatomy Ontology|0
+IFAR|Fanconi Anemia Ontology|0
+GO|Gene Ontology|6496
+BFO|Basic Formal Ontology|29
+MHC|Major Histocompatibility Complex Ontology|0
+DRON|The Drug Ontology|0
+ONL-MSA|Mental State Assessment Ontology|0
+BOF|Biodiversity Ontology|0
+SDO|Sleep Domain Ontology|0
+NATPRO|Natural Products Ontology|0
+ICPC|International Classification of Primary Care|215
+NBO|Neuro Behavior Ontology|0
+PEDTERM|Pediatric Terminology|0
+DDANAT|Dictyostelium Discoideum Anatomy Ontology|0
+JERM|SysMO JERM Ontology of Systems Biology for Micro-Organisms|0
+PECO|Plant Environmental Conditions Ontology|0
+DERMO|Human Dermatological Disease Ontology|0
+PHENX|PhenX Phenotypic Terms Ontology|0
+SNMI|Systematized Nomenclature of Medicine|459
+ECG|Electrocardiography Ontology|0
+PO|Plant Ontology|21

@@ -1,0 +1,59 @@
+LinkedData.config do |config|
+  config.goo_port          = 8080
+  config.goo_host          = "localhost"
+  config.search_server_url = "http://localhost:8983/solr/NCBO1"
+  config.repository_folder = "./test/data/ontology_files/repo"
+  config.rest_url_prefix    = "http://stagedata.bioontology.org/"
+  config.enable_security   = false
+  config.http_redis_host   = "localhost"
+  config.http_redis_port   = 6379
+  config.goo_redis_host    = "localhost"
+  config.goo_redis_port    = 6379
+end
+
+Annotator.config do |config|
+  config.mgrep_dictionary_file      = "./test/tmp/dictionary.txt"
+  config.mgrep_host                 = "ncbo-unittest2"
+  config.mgrep_port                 = 55555
+  config.mgrep_alt_host             = "localhost"
+  config.mgrep_alt_port             = 55556
+  config.annotator_redis_host       = "localhost"
+  config.annotator_redis_port       = 6379
+  config.annotator_redis_prefix     = "c1:"
+  config.annotator_redis_alt_prefix = "c2:"
+end
+
+OntologyRecommender.config do |config|
+  # The URL for the BioPortal Rails UI
+  config.ui_url = 'http://localhost:3000/'
+  config.input_type = 1
+  config.output_type = 1
+  config.delimiter = ','
+  # Coverage evaluation
+  config.wc = 0.55
+  config.pref_score = 10
+  config.syn_score = 5
+  config.multiterm_score = 4
+  # Specialization evaluation
+  config.ws = 0.15
+  # Acceptance evaluation
+  config.wa = 0.15
+  config.w_bp = 0.34
+  config.w_umls = 0.33
+  config.w_pmed = 0.33
+  config.bp_data_file = 'config/acceptance_evaluation/sources/bp_data.dat'
+  config.umls_data_file = 'config/acceptance_evaluation/sources/umls_data.dat'
+  config.pmed_data_file = 'config/acceptance_evaluation/sources/pmed_data.dat'
+  config.bp_scores_file = 'config/acceptance_evaluation/scores/bp_scores.dat'
+  config.umls_scores_file = 'config/acceptance_evaluation/scores/umls_scores.dat'
+  config.pmed_scores_file = 'config/acceptance_evaluation/scores/pmed_scores.dat'
+  # Detail evaluation
+  config.wd = 0.15
+  config.top_defs = 1
+  config.top_syns = 3
+  config.top_props = 17
+  # Other parameters
+  config.max_elements_set = 3
+  config.max_results_single = 25
+  config.max_results_sets = 25
+end
