@@ -11,18 +11,18 @@ class TestAnnotatorUtils < TestCase
   end
 
   # TODO:
-  def test_generate_bioportal_scores
-    OntologyRecommender::Utils::EvaluatorsUtils::AcceptanceEvaluatorUtils.generate_bioportal_scores
-  end
-
-  # TODO:
-  def test_generate_umls_scores
-    OntologyRecommender::Utils::EvaluatorsUtils::AcceptanceEvaluatorUtils.generate_umls_scores
-  end
-
-  # TODO:
-  def test_generate_pubmed_scores
-    OntologyRecommender::Utils::EvaluatorsUtils::AcceptanceEvaluatorUtils.generate_pubmed_scores
-  end
+  # def test_generate_bioportal_scores
+  #   OntologyRecommender::Utils::EvaluatorsUtils::AcceptanceEvaluatorUtils.generate_bioportal_scores
+  # end
+  #
+  # # TODO:
+  # def test_generate_umls_scores
+  #   OntologyRecommender::Utils::EvaluatorsUtils::AcceptanceEvaluatorUtils.generate_umls_scores
+  # end
+  #
+  # # TODO:
+  # def test_generate_pubmed_scores
+  #   OntologyRecommender::Utils::EvaluatorsUtils::AcceptanceEvaluatorUtils.generate_pubmed_scores
+  # end
 
 end
