@@ -9,7 +9,7 @@ module OntologyRecommender
       attr_reader :pref_score, :syn_score, :multiterm_score
 
       def initialize
-        @spec_scores_hash = nil
+        # @spec_scores_hash = nil
       end
 
       def evaluate(annotations_hash, ont_acronym)
@@ -41,12 +41,6 @@ module OntologyRecommender
         #   end
         #   return @spec_scores_hash[ont_uri]
         # end
-      end
-
-      # TODO: obtain number of classes. It could be inside some Utils class
-      private
-      def get_number_of_classes(ont_acronym)
-        return 1000
       end
 
     end

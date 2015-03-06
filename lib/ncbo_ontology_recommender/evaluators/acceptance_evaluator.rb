@@ -12,13 +12,13 @@ module OntologyRecommender
       # - w_umls: weight assigned to the criteria "is the ontology included into UMLS?"
       # - w_pmed: weight assigned to the number of PubMed articles that mention the ontology
       def initialize(w_bp, w_umls, w_pmed)
-        @w_bp = w_bp
-        @w_umls = w_umls
-        @w_pmed = w_pmed
-        # TODO: read paths from config file
-        @bp_scores = scores_to_hash(OntologyRecommender.settings.bp_scores_file, '|')
-        @umls_scores = scores_to_hash(OntologyRecommender.settings.umls_scores_file, '|')
-        @pmed_scores = scores_to_hash(OntologyRecommender.settings.pmed_scores_file, '|')
+        # @w_bp = w_bp
+        # @w_umls = w_umls
+        # @w_pmed = w_pmed
+        # # TODO: read paths from config file
+        # @bp_scores = scores_to_hash(OntologyRecommender.settings.bp_scores_file, '|')
+        # @umls_scores = scores_to_hash(OntologyRecommender.settings.umls_scores_file, '|')
+        # @pmed_scores = scores_to_hash(OntologyRecommender.settings.pmed_scores_file, '|')
       end
 
       def evaluate(ont_acronym)
