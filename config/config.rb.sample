@@ -24,8 +24,6 @@ Annotator.config do |config|
 end
 
 OntologyRecommender.config do |config|
-  # The URL for the BioPortal Rails UI
-  config.ui_url = 'http://localhost:3000/'
   config.input_type = 1
   config.output_type = 1
   config.delimiter = ','

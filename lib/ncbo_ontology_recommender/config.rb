@@ -17,7 +17,6 @@ module OntologyRecommender
 
     # Set defaults
     # The URL for the BioPortal Rails UI
-    @settings.ui_url ||= 'http://bioportal.bioontology.org/'
     @settings.input_type ||= 1
     @settings.output_type ||= 1
     @settings.delimiter ||= ','
