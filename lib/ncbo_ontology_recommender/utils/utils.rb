@@ -106,6 +106,20 @@ module OntologyRecommender
       uri_parts = uri.split("/")
       return uri_parts[uri_parts.length-1]
     end
+
+    module_function
+    def get_number_of_classes(ont_acronym)
+      # Retrieves submission
+      sub = LinkedData::Models::Ontology.find(ont_acronym).first.latest_submission
+      begin
+        sub.bring(metrics: LinkedData::Models::Metric.attributes)
+        cls_count = sub.metrics.classes
+      rescue
+        @logger.error("Unable to retrieve metrics for latest submission of #{ont.id.to_s} in Recommender.")
+        cls_count = LinkedData::Models::Class.where.in(sub).count
+      end
+      return cls_count || 0
+    end
   end
 
 end

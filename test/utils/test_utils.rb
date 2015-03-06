@@ -4,6 +4,7 @@ class TestUtils < TestCase
 
   def self.before_suite
     @@custom_annotation = OntologyRecommender::Utils::AnnotatorUtils::CustomAnnotation
+    @@utils = OntologyRecommender::Utils
   end
 
   def self.after_suite
@@ -68,41 +69,47 @@ class TestUtils < TestCase
            [1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4]]
     exp_4 = [[1], [2], [3], [4], [1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4],
              [1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4], [1, 2, 3, 4]]
-    assert_equal(exp_0, OntologyRecommender::Utils.get_combinations([], 3))
-    combinations = OntologyRecommender::Utils.get_combinations(elements, 1)
+    assert_equal(exp_0, @@utils.get_combinations([], 3))
+    combinations = @@utils.get_combinations(elements, 1)
     assert_equal(exp_1, combinations)
-    combinations = OntologyRecommender::Utils.get_combinations(elements, 2)
+    combinations = @@utils.get_combinations(elements, 2)
     assert_equal(exp_2, combinations)
-    combinations = OntologyRecommender::Utils.get_combinations(elements, 3)
+    combinations = @@utils.get_combinations(elements, 3)
     assert_equal(exp_3, combinations)
-    combinations = OntologyRecommender::Utils.get_combinations(elements, 4)
+    combinations = @@utils.get_combinations(elements, 4)
     assert_equal(exp_4, combinations)
-    combinations = OntologyRecommender::Utils.get_combinations(elements, 10)
+    combinations = @@utils.get_combinations(elements, 10)
     assert_equal(exp_4, combinations)
   end
 
   def test_normalize
-    assert_equal(0, OntologyRecommender::Utils.normalize(0, 0, 1, 0, 1))
-    assert_equal(1, OntologyRecommender::Utils.normalize(1, 0, 1, 0, 1))
-    assert_equal(0, OntologyRecommender::Utils.normalize(10, 10, 15, 0, 1))
-    assert_equal(1, OntologyRecommender::Utils.normalize(15, 10, 15, 0, 1))
-    assert_equal(0.5, OntologyRecommender::Utils.normalize(5, 0, 10, 0, 1))
-    assert_equal(21.to_f/179.to_f, OntologyRecommender::Utils.normalize(27, 6, 185, 0, 1))
+    assert_equal(0, @@utils.normalize(0, 0, 1, 0, 1))
+    assert_equal(1, @@utils.normalize(1, 0, 1, 0, 1))
+    assert_equal(0, @@utils.normalize(10, 10, 15, 0, 1))
+    assert_equal(1, @@utils.normalize(15, 10, 15, 0, 1))
+    assert_equal(0.5, @@utils.normalize(5, 0, 10, 0, 1))
+    assert_equal(21.to_f/179.to_f, @@utils.normalize(27, 6, 185, 0, 1))
   end
 
   def test_normalize_weights
-    assert_raises(ArgumentError) {OntologyRecommender::Utils.normalize_weights([0, 0, 0, 0])}
-    assert_raises(RangeError) {OntologyRecommender::Utils.normalize_weights([0, -2, 0, 0])}
-    assert_equal([0.2, 0.2, 0.5, 0.1], OntologyRecommender::Utils.normalize_weights([0.2, 0.2, 0.5, 0.1]))
-    assert_equal([0.2, 0.2, 0.5, 0.1], OntologyRecommender::Utils.normalize_weights([0.2, 0.2, 0.5, 0.1]))
-    assert_equal([0, 0.5, 0.4, 0.1], OntologyRecommender::Utils.normalize_weights([0, 50, 40, 10]))
-    assert_equal([0.1, 0.4, 0.4, 0.1], OntologyRecommender::Utils.normalize_weights([10, 40, 40, 10]))
+    assert_raises(ArgumentError) {@@utils.normalize_weights([0, 0, 0, 0])}
+    assert_raises(RangeError) {@@utils.normalize_weights([0, -2, 0, 0])}
+    assert_equal([0.2, 0.2, 0.5, 0.1], @@utils.normalize_weights([0.2, 0.2, 0.5, 0.1]))
+    assert_equal([0.2, 0.2, 0.5, 0.1], @@utils.normalize_weights([0.2, 0.2, 0.5, 0.1]))
+    assert_equal([0, 0.5, 0.4, 0.1], @@utils.normalize_weights([0, 50, 40, 10]))
+    assert_equal([0.1, 0.4, 0.4, 0.1], @@utils.normalize_weights([10, 40, 40, 10]))
   end
 
   def test_get_ont_acronym_from_uri
     uri = 'http://data.bioontology.org/ontologies/SNOMEDCT'
-    acronym = OntologyRecommender::Utils.get_ont_acronym_from_uri(uri)
+    acronym = @@utils.get_ont_acronym_from_uri(uri)
     assert_equal('SNOMEDCT', acronym)
+  end
+
+  def test_get_number_of_classes
+    assert_equal(810, @@utils.get_number_of_classes('MCCLTEST-0'))
+    assert_equal(486, @@utils.get_number_of_classes('BROTEST-0'))
+    assert_equal(435, @@utils.get_number_of_classes('ONTOMATEST-0'))
   end
 
 end
