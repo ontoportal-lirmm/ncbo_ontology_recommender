@@ -75,7 +75,7 @@ module OntologyRecommender
       ranking = get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa,
                                    wd, top_defs, top_syns, top_props, max_results_single)
       if output_type == 2
-        ranking = get_ranking_sets(ranking, input, wc, max_elements_set, max_results_sets)
+        ranking = get_ranking_sets(ranking, input, wc, ws, max_elements_set, max_results_sets)
       end
       end_time = Time.now
       @logger.info('Recommendation finished. Ranking size: ' + ranking.size.to_s +
@@ -117,7 +117,7 @@ module OntologyRecommender
         aggregated_score = Scores::ScoreAggregator.
             get_aggregated_scores([Scores::Score.new(coverage_result.normalizedScore, wc),
                                    Scores::Score.new(specialization_result.normalizedScore, ws),
-                                   Scores::Score.new(acceptance_result.score, ws)])
+                                   Scores::Score.new(acceptance_result.score, wa)])
         # Loads the ontology information
         ont = LinkedData::Models::Ontology.find(ont_acronym).first
         ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
@@ -133,7 +133,7 @@ module OntologyRecommender
 
     # Ontology sets ranking. Each position may contain one or several ontologies.
     private
-    def get_ranking_sets(ranking_single, input, wc, max_elements_set, max_results_sets)
+    def get_ranking_sets(ranking_single, input, wc, ws, max_elements_set, max_results_sets)
       @logger.info('Computing ranking sets')
       # Stores the results in a hash |ontology_acronym,result| to access them easily
       single_results_hash = {}
@@ -173,7 +173,7 @@ module OntologyRecommender
       # Evaluation of ontology sets
       ranking = [ ]
       onts_combinations.each do |set|
-        # Coverage evaluation. It is computed for all the annotations together.
+        # Coverage evaluation for ontology sets. It is computed for all the annotations together.
         annotations_set = [ ]
         set.each do |acronym|
           annotations_set += single_results_hash[acronym].coverageResult.annotations
@@ -199,19 +199,29 @@ module OntologyRecommender
           end
 
           # TODO
-          # Specialization evaluation
-          specialization_result_set = OntologyRecommender::Evaluators::SpecializationResult.new(0, 0)
+          # Specialization evaluation for ontology sets
+          spec_score_set = 0
+          spec_norm_score_set = 0
+          set.each do |acronym|
+            spec_result = single_results_hash[acronym].specializationResult
+            total_score = coverage_result_set.score
+            correction_factor = partial_coverage_scores[acronym].to_f / total_score.to_f
+            spec_score_set += spec_result.score.to_f * correction_factor.to_f
+            spec_norm_score_set += spec_result.normalizedScore.to_f * correction_factor.to_f
+          end
+          specialization_result_set = OntologyRecommender::Evaluators::SpecializationResult.new(spec_score_set, spec_norm_score_set)
 
           # TODO
-          # Acceptance evaluation
+          # Acceptance evaluation for ontology sets
           acceptance_result_set = OntologyRecommender::Evaluators::AcceptanceResult.new(0, 0, 0, 0)
 
           # TODO
-          # Detail of knowledge evaluation
+          # Detail of knowledge evaluation for ontology sets
           detail_result_set = OntologyRecommender::Evaluators::DetailResult.new(0)
 
           aggregated_score_set = Scores::ScoreAggregator.
-              get_aggregated_scores([Scores::Score.new(coverage_result_set.normalizedScore, wc)])
+              get_aggregated_scores([Scores::Score.new(coverage_result_set.normalizedScore, wc),
+                                     Scores::Score.new(specialization_result_set.normalizedScore, ws),])
 
           onts = [ ]
           set.each do |acronym|
