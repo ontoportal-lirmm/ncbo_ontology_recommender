@@ -187,14 +187,13 @@ module OntologyRecommender
         if set.size == annotations_hash.keys.size
           # Calculates the contribution done by each ontology to the coverage score. This contribution (or partial score)
           # will be used later to calculate the rest of the scores proportionally
-          # Hash |uri, partialscore|
+          # Hash |acronym, partialscore|
           partial_coverage_scores = { }
           set.each do |acronym|
             sum = 0
             annotations_hash[acronym].each do |a|
               sum += @coverage_evaluator.get_annotation_score(a)
             end
-            # partial_coverage_scores[uri] = annotations_hash[uri].sum{ |a| coverage_evaluator.get_annotation_score(a)}
             partial_coverage_scores[acronym] = sum
           end
 
@@ -225,8 +224,8 @@ module OntologyRecommender
 
           onts = [ ]
           set.each do |acronym|
-            ont = Ontology.find(acronym).first
-            ont.bring(*Ontology.goo_attrs_to_load([:acronym, :name]))
+            ont = LinkedData::Models::Ontology.find(acronym).first
+            ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
             onts << ont
           end
 

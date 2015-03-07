@@ -4,12 +4,13 @@ module OntologyRecommender
 
     # Given the large number of ontologies in BioPortal, it is necessary to minimize the number of ontologies that
     # will be used to create the ontology sets that will be evaluated. Otherwise, the number of ontology sets will
-    # be too high and the system will be too slow.
+    # be too high and the evaluation will be too slow.
     #
     # The rules used to select the ontologies are:
     # - If the annotations done with an ontology O1 include the annotations done with another ontology, O2, then O2
     # can be ignored and it will not be taken into account to generate ontology combinations.
-    # - If one particular annotation is done with several different ontologies, then the ontology that has a better
+    # TODO:
+    # - If one particular annotation is done with several ontologies, then the ontology that has a better
     # evaluation score (excluding the coverage criteria) will be selected and the other ones will be ignored.
     module_function
     def select_ontologies_for_ranking_sets(annotations, coverage_evaluator)

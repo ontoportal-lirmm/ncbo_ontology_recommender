@@ -5,7 +5,6 @@ require_relative '../../lib/ncbo_ontology_recommender/utils/utils'
 class TestSpecializationEvaluator < TestCase
 
   def self.before_suite
-    @@custom_annotation = OntologyRecommender::Utils::AnnotatorUtils::CustomAnnotation
   end
 
   def self.after_suite
