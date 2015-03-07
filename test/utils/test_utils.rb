@@ -10,55 +10,71 @@ class TestUtils < TestCase
   def self.after_suite
   end
 
-  # def test_select_ontologies_for_ranking_sets
-  #   pref_score = 10
-  #   syn_score = 5
-  #   multiterm_score = 4
-  #   coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
-  #   a1 = @@custom_annotation.new(17, 26, 'PREF', 'BLOOD CELL', 'o1_uri', 'o1_acronym', 'o1_uri/bc', nil)
-  #   a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', 'o2_uri', 'o2_acronym', 'o2_uri/wbc', nil)
-  #   a3 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', 'o3_uri', 'o3_acronym', 'o3_uri/blood', nil)
-  #   a4 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', 'o2_uri', 'o2_acronym', 'o2_uri/blood', nil)
-  #   a5 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', 'o5_uri', 'o5_acronym', 'o5_uri/blood', nil)
-  #   selected_uris = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([], coverage_evaluator)
-  #   assert_equal([], selected_uris)
-  #   selected_uris = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a1], coverage_evaluator)
-  #   assert_equal(['o1_uri'], selected_uris)
-  #   selected_uris = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a1, a2, a3], coverage_evaluator)
-  #   assert_equal(['o2_uri'], selected_uris)
-  #   selected_uris = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a3, a4, a5], coverage_evaluator)
-  #   assert_equal(['o3_uri'], selected_uris)
-  #   selected_uris = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a4, a5], coverage_evaluator)
-  #   assert_equal(['o2_uri', 'o5_uri'], selected_uris)
-  # end
+  def test_select_ontologies_for_ranking_sets
+    pref_score = 10
+    syn_score = 5
+    multiterm_score = 4
+    cls1 = LinkedData::Models::Class.new
+    cls1.submission = LinkedData::Models::OntologySubmission.new
+    cls1.submission.ontology = LinkedData::Models::Ontology.new
+    cls1.submission.ontology.acronym = 'ONT1'
+    cls2 = LinkedData::Models::Class.new
+    cls2.submission = LinkedData::Models::OntologySubmission.new
+    cls2.submission.ontology = LinkedData::Models::Ontology.new
+    cls2.submission.ontology.acronym = 'ONT2'
+    cls3 = LinkedData::Models::Class.new
+    cls3.submission = LinkedData::Models::OntologySubmission.new
+    cls3.submission.ontology = LinkedData::Models::Ontology.new
+    cls3.submission.ontology.acronym = 'ONT3'
+    cls4 = LinkedData::Models::Class.new
+    cls4.submission = LinkedData::Models::OntologySubmission.new
+    cls4.submission.ontology = LinkedData::Models::Ontology.new
+    cls4.submission.ontology.acronym = 'ONT4'
+    a1 = @@custom_annotation.new(17, 26, 'PREF', 'BLOOD CELL', cls1)
+    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', cls2)
+    a3 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', cls3)
+    a4 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls2)
+    a5 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls4)
+    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
+    selected_acronyms = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([], coverage_evaluator)
+    assert_equal([], selected_acronyms)
+    selected_acronyms = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a1], coverage_evaluator)
+    assert_equal([cls1.submission.ontology.acronym], selected_acronyms)
+    selected_acronyms = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a1, a2, a3], coverage_evaluator)
+    assert_equal([cls2.submission.ontology.acronym], selected_acronyms)
+    selected_acronyms = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a3, a4, a5], coverage_evaluator)
+    assert_equal([cls3.submission.ontology.acronym], selected_acronyms)
+    selected_acronyms = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([a4, a5], coverage_evaluator)
+    assert_equal([cls2.submission.ontology.acronym, cls4.submission.ontology.acronym], selected_acronyms)
+  end
 
-  # def test_annotations_contained_in
-  #   pref_score = 10
-  #   syn_score = 5
-  #   multiterm_score = 4
-  #   coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
-  #   a1 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, '', nil, nil)
-  #   a2 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, '', nil, nil)
-  #   a3 = @@custom_annotation.new(1, 5, 'SYN', 'BLOOD', nil, '', nil, nil)
-  #   a4 = @@custom_annotation.new(1, 10, 'PREF', 'BLOOD CELL', '', nil, nil, nil)
-  #   a5 = @@custom_annotation.new(10, 13, 'PREF', 'HEAD', nil, '', nil, nil)
-  #   a6 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil, '', nil, nil)
-  #   a7 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil, '', nil, nil)
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2], [a1], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a3], [a1], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2], [a4], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2, a3], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2, a5], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1, a6], [a4, a5, a7], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2, a3], [a1], coverage_evaluator))
-  #   assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a3, a7], [a6, a2], coverage_evaluator))
-  #   assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a1], [a3], coverage_evaluator))
-  #   assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a4], [a2], coverage_evaluator))
-  #   assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a2, a5], [a1], coverage_evaluator))
-  #   assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a4, a5, a7], [a1, a6], coverage_evaluator))
-  #   assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a6, a2], [a3, a7], coverage_evaluator))
-  # end
+  def test_annotations_contained_in
+    pref_score = 10
+    syn_score = 5
+    multiterm_score = 4
+    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
+    a1 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil)
+    a2 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil)
+    a3 = @@custom_annotation.new(1, 5, 'SYN', 'BLOOD', nil)
+    a4 = @@custom_annotation.new(1, 10, 'PREF', 'BLOOD CELL', nil)
+    a5 = @@custom_annotation.new(10, 13, 'PREF', 'HEAD', nil)
+    a6 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil)
+    a7 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil)
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2], [a1], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a3], [a1], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2], [a4], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2, a3], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2, a5], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1, a6], [a4, a5, a7], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2, a3], [a1], coverage_evaluator))
+    assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a3, a7], [a6, a2], coverage_evaluator))
+    assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a1], [a3], coverage_evaluator))
+    assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a4], [a2], coverage_evaluator))
+    assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a2, a5], [a1], coverage_evaluator))
+    assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a4, a5, a7], [a1, a6], coverage_evaluator))
+    assert_equal(false, OntologyRecommender::Utils.annotations_contained_in([a6, a2], [a3, a7], coverage_evaluator))
+  end
 
   def test_get_combinations
     elements = [1, 2, 3, 4]
