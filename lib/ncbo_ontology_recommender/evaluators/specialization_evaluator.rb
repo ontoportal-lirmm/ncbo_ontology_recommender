@@ -1,4 +1,5 @@
 require_relative 'specialization_result'
+
 module OntologyRecommender
 
   module Evaluators
