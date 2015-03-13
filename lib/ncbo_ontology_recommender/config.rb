@@ -29,15 +29,8 @@ module OntologyRecommender
     @settings.ws ||= 0.15
     # Acceptance evaluation
     @settings.wa ||= 0.15
-    @settings.w_bp ||= 0.34
-    @settings.w_umls ||= 0.33
-    @settings.w_pmed ||= 0.33
-    # @settings.bp_data_file ||= 'config/acceptance_evaluation/sources/bp_data.dat'
-    # @settings.umls_data_file ||= 'config/acceptance_evaluation/sources/umls_data.dat'
-    # @settings.pmed_data_file ||= 'config/acceptance_evaluation/sources/pmed_data.dat'
-    # @settings.bp_scores_file ||= 'config/acceptance_evaluation/scores/bp_scores.dat'
-    # @settings.umls_scores_file ||= 'config/acceptance_evaluation/scores/umls_scores.dat'
-    # @settings.pmed_scores_file ||= 'config/acceptance_evaluation/scores/pmed_scores.dat'
+    @settings.w_bp ||= 0.50
+    @settings.w_umls ||= 0.50
     # Detail evaluation
     @settings.wd ||= 0.15
     @settings.top_defs ||= 1
