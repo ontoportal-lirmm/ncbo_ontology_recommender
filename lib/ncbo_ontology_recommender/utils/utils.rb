@@ -108,6 +108,7 @@ module OntologyRecommender
       return uri_parts[uri_parts.length-1]
     end
 
+    # TODO: one call for all the ontologies?
     module_function
     def get_number_of_classes(ont_acronym)
       # Retrieves submission
@@ -115,6 +116,24 @@ module OntologyRecommender
       cls_count = LinkedData::Models::Class.where.in(sub).count
       return cls_count || 0
     end
+
+    module_function
+    # For an array of BioPortal ontology acronyms returns only those that are included into UMLS
+    def get_umls_ontologies(ont_acronyms)
+      ont_acronyms2 = ont_acronyms.dup
+      # Delete if not in UMLS
+      ont_acronyms2.delete_if {|acr| !LinkedData::Models::Ontology.find(acr).
+          include(group: LinkedData::Models::Group.goo_attrs_to_load()).first.group.map {|gr| gr.acronym}.include?('UMLS') }
+      return ont_acronyms2
+    end
+
+    module_function
+    def get_ontology(ont_acronym)
+      ont = LinkedData::Models::Ontology.find(ont_acronym).first
+      ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
+      return ont
+    end
+
   end
 
 end
