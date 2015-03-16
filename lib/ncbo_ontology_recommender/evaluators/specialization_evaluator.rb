@@ -7,7 +7,12 @@ module OntologyRecommender
     ##
     # Ontology specialization evaluator
     class SpecializationEvaluator
-      def initialize
+      attr_reader :pref_score, :syn_score, :multiterm_score
+      def initialize(pref_score, syn_score, multiterm_score)
+        @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
+        @pref_score = pref_score
+        @syn_score = syn_score
+        @multiterm_score = multiterm_score
         @spec_scores_hash = nil
       end
 
@@ -18,15 +23,25 @@ module OntologyRecommender
           @spec_scores_hash = { }
           top_spec_score = 0
           annotations_hash.each do |ont_acronym, anns|
+            # Calculates the specialization score
+            spec_score = 0
+            anns.each do |ann|
+              spec_score += get_annotation_score(ann) + (2 * ann.hierarchySize)
+            end
             # Number of classes in the ontology
-            num_classes = Utils.get_number_of_classes(ont_acronym)
-            # Number of annotations done with the ontology
-            num_annotations = anns.size
-            spec_score = num_annotations.to_f / Math.log10(num_classes)
+            begin
+              num_classes = Utils.get_number_of_classes(ont_acronym)
+            rescue StandardError
+              @logger.info('Ontology not found: ' + ont_acronym)
+              spec_score = 0
+            else
+              # Normalization by ontology size
+              spec_score = (spec_score / Math.log10(num_classes)).round(2)
+            end
             if spec_score > top_spec_score
               top_spec_score = spec_score
             end
-            # The normalized score will be computed and assigned after evaluating all ontologies
+            # The normalized score (range [0,1]) will be computed and assigned after evaluating all ontologies
             norm_spec_score = nil
             @spec_scores_hash[ont_acronym] = OntologyRecommender::Evaluators::SpecializationResult.new(spec_score, norm_spec_score)
           end
@@ -37,6 +52,19 @@ module OntologyRecommender
           end
           @spec_scores_hash[ont_acronym]!=nil ? (return @spec_scores_hash[ont_acronym]) : (return OntologyRecommender::Evaluators::SpecializationResult.new(0, 0))
         end
+      end
+
+      # The annotation score is computed in the same way than for the coverage evaluation
+      private
+      def get_annotation_score(annotation)
+        number_of_words = annotation.text.split(" ").length
+        match_type_score = annotation.matchType == 'PREF' ? @pref_score : @syn_score
+        if number_of_words == 1
+          score = match_type_score
+        else
+          score = (match_type_score + @multiterm_score) * number_of_words
+        end
+        return score
       end
 
       # TODO: improve specialization formula. That will also require to finish writing this method
@@ -57,7 +85,7 @@ module OntologyRecommender
       #     end
       #   end
       #   return result
-      end
+    end
 
   end
 
