@@ -18,14 +18,14 @@ module OntologyRecommender
         @features_count_hash = nil
       end
 
-      def evaluate(annotations_all, ont_annotations)
+      def evaluate(best_annotations_ont)
         if @features_count_hash.nil?
-          @features_count_hash = get_features_count_hash(annotations_all)
+          @features_count_hash = get_features_count_hash(best_annotations_ont)
         end
         sum_defs = 0
         sum_syns = 0
         sum_props = 0
-        ont_annotations.each do |ann|
+        best_annotations_ont.each do |ann|
           defs_score_class = get_score(get_number_of_definitions(ann.annotatedClass.id.to_s), @top_defs)
           syns_score_class = get_score(get_number_of_synonyms(ann.annotatedClass.id.to_s), @top_syns)
           props_score_class = get_score(get_number_of_properties(ann.annotatedClass.id.to_s), @top_props)
@@ -33,9 +33,9 @@ module OntologyRecommender
           sum_syns += syns_score_class
           sum_props += props_score_class
         end
-        detail_score_defs = sum_defs.to_f / ont_annotations.size.to_f
-        detail_score_syns = sum_syns.to_f / ont_annotations.size.to_f
-        detail_score_props = sum_props.to_f / ont_annotations.size.to_f
+        detail_score_defs = sum_defs.to_f / best_annotations_ont.size.to_f
+        detail_score_syns = sum_syns.to_f / best_annotations_ont.size.to_f
+        detail_score_props = sum_props.to_f / best_annotations_ont.size.to_f
         detail_score = (detail_score_defs + detail_score_syns + detail_score_props).to_f / 3.to_f
         return OntologyRecommender::Evaluators::DetailResult.new(detail_score, detail_score_defs,
                                                                  detail_score_syns, detail_score_props)
@@ -58,9 +58,9 @@ module OntologyRecommender
 
       # Returns a Hash |class_id], [x, y, z]|, with x = no. definitions, y = no. synonyms, z = no. properties of the class
       private
-      def get_features_count_hash(annotations_all)
+      def get_features_count_hash(annotations)
         hash = {}
-        classes = annotations_all.map { |ann| ann.annotatedClass }
+        classes = annotations.map { |ann| ann.annotatedClass }
         populated_classes = populate_classes(classes, nil)
         populated_classes.each { |cls| hash[cls.id] =
             [(defined? cls.definition) != nil ? cls.definition.size : 0,
