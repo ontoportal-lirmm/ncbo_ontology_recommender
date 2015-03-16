@@ -49,13 +49,13 @@ module OntologyRecommender
             if a2_score >= a1_score
               contained = true
               break
-            # elsif a2_score == a1_score
-            #   # TODO: complete when all the evaluators are implemented. It is necessary to give more priority to one
-            #   # ontology than to another. Currently an alphabetical comparison is done
-            #   if a1.ontologyAcronym > a2.ontologyAcronym
-            #     contained = true
-            #   end
-            #   break
+              # elsif a2_score == a1_score
+              #   # TODO: complete when all the evaluators are implemented. It is necessary to give more priority to one
+              #   # ontology than to another. Currently an alphabetical comparison is done
+              #   if a1.ontologyAcronym > a2.ontologyAcronym
+              #     contained = true
+              #   end
+              #   break
             end
           end
         end
@@ -80,7 +80,7 @@ module OntologyRecommender
     def normalize(x, xmin, xmax, ymin, ymax)
       xrange = xmax - xmin
       yrange = ymax - ymin
-      ymin + (x - xmin) * (yrange.to_f / xrange)
+      ymin + (x - xmin) * (yrange.to_f / xrange.to_f)
     end
 
     # Normalizes an array of values in the interval 0..X to the interval 0..1, such that the sum of all values is 1
@@ -111,8 +111,10 @@ module OntologyRecommender
     # TODO: one call for all the ontologies?
     module_function
     def get_number_of_classes(ont_acronym)
+      ont = LinkedData::Models::Ontology.find(ont_acronym)
+      raise StandardError, ('Ontology not found: ' + ont_acronym) if ont.nil?
       # Retrieves submission
-      sub = LinkedData::Models::Ontology.find(ont_acronym).first.latest_submission
+      sub = ont.first.latest_submission
       cls_count = LinkedData::Models::Class.where.in(sub).count
       return cls_count || 0
     end
@@ -120,11 +122,18 @@ module OntologyRecommender
     module_function
     # For an array of BioPortal ontology acronyms returns only those that are included into UMLS
     def get_umls_ontologies(ont_acronyms)
-      ont_acronyms2 = ont_acronyms.dup
-      # Delete if not in UMLS
-      ont_acronyms2.delete_if {|acr| !LinkedData::Models::Ontology.find(acr).
-          include(group: LinkedData::Models::Group.goo_attrs_to_load()).first.group.map {|gr| gr.acronym}.include?('UMLS') }
-      return ont_acronyms2
+      umls_acronyms = []
+      ont_acronyms.each do |acr|
+        ont = LinkedData::Models::Ontology.find(acr).include(group: LinkedData::Models::Group.goo_attrs_to_load())
+        if !ont.nil?
+          if ont.first.loaded_attributes.include? :group
+            if ont.first.group.map {|gr| gr.acronym}.include?('UMLS')
+              umls_acronyms << acr
+            end
+          end
+        end
+      end
+      return umls_acronyms
     end
 
     module_function
