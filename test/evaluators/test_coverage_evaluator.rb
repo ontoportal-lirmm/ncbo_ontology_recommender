@@ -9,6 +9,14 @@ class TestCoverageEvaluator < TestCase
     @@multiterm_score = 4
     @@coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(@@pref_score, @@syn_score, @@multiterm_score)
     @@custom_annotation = OntologyRecommender::Utils::AnnotatorUtils::CustomAnnotation
+    @@cls_ont1 = LinkedData::Models::Class.new
+    @@cls_ont1.submission = LinkedData::Models::OntologySubmission.new
+    @@cls_ont1.submission.ontology = LinkedData::Models::Ontology.new
+    @@cls_ont1.submission.ontology.acronym = 'ONT1'
+    @@cls_ont2 = LinkedData::Models::Class.new
+    @@cls_ont2.submission = LinkedData::Models::OntologySubmission.new
+    @@cls_ont2.submission.ontology = LinkedData::Models::Ontology.new
+    @@cls_ont2.submission.ontology.acronym = 'ONT2'
   end
 
   def self.after_suite
@@ -16,17 +24,17 @@ class TestCoverageEvaluator < TestCase
 
   def test_evaluate
     input = 'melanoma, white blood cell, melanoma,     arm, cavity of stomach'
-    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil)
-    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', nil)
-    a3 = @@custom_annotation.new(29, 36, 'PREF', 'MELANOMA', nil)
-    a4 = @@custom_annotation.new(43, 45, 'SYN', 'ARM', nil)
-    a5 = @@custom_annotation.new(58, 64, 'PREF', 'STOMACH', nil)
-    a6 = @@custom_annotation.new(1, 8, 'SYN', 'MELANOMA', nil)
-    a7 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', nil)
-    a8 = @@custom_annotation.new(29, 36, 'SYN', 'MELANOMA', nil)
+    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', @@cls_ont1, 0)
+    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', @@cls_ont1, 0)
+    a3 = @@custom_annotation.new(29, 36, 'PREF', 'MELANOMA', @@cls_ont1, 0)
+    a4 = @@custom_annotation.new(43, 45, 'SYN', 'ARM', @@cls_ont1, 0)
+    a5 = @@custom_annotation.new(58, 64, 'PREF', 'STOMACH', @@cls_ont1, 0)
+    a6 = @@custom_annotation.new(1, 8, 'SYN', 'MELANOMA', @@cls_ont2, 0)
+    a7 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', @@cls_ont2, 0)
+    a8 = @@custom_annotation.new(29, 36, 'SYN', 'MELANOMA', @@cls_ont2, 0)
     annotations_all = [a1, a2, a3, a4, a5, a6, a7, a8]
-    annotations_ontology = [a6, a7, a8]
-    result = @@coverage_evaluator.evaluate(input, annotations_all, annotations_ontology)
+    annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
+    result = @@coverage_evaluator.evaluate(input, annotations_all_hash, annotations_all_hash['ONT2'])
     top_score = @@coverage_evaluator.get_annotation_score(a1) + @@coverage_evaluator.get_annotation_score(a2) +
         @@coverage_evaluator.get_annotation_score(a3) + @@coverage_evaluator.get_annotation_score(a4) +
         @@coverage_evaluator.get_annotation_score(a7)
@@ -41,11 +49,11 @@ class TestCoverageEvaluator < TestCase
 
   def test_evaluate_empty_input
     input = ''
-    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil)
-    a2 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', nil)
+    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', @@cls_ont1, 0)
+    a2 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', @@cls_ont2, 0)
     annotations_all = [a1, a2]
-    annotations_ontology = [a1]
-    result = @@coverage_evaluator.evaluate(input, annotations_all, annotations_ontology)
+    annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
+    result = @@coverage_evaluator.evaluate(input, annotations_all_hash, annotations_all_hash['ONT2'])
     assert result != nil
     assert_equal(0, result.score)
     assert_equal(0, result.normalizedScore)
@@ -56,9 +64,8 @@ class TestCoverageEvaluator < TestCase
 
   def test_evaluate_empty_annotations_all
     input = 'melanoma'
-    annotations_all = [ ]
-    annotations_ontology = [ ]
-    result = @@coverage_evaluator.evaluate(input, annotations_all, annotations_ontology)
+    annotations_all_hash = Hash.new
+    result = @@coverage_evaluator.evaluate(input, annotations_all_hash, [])
     assert result != nil
     assert_equal(0, result.score)
     assert_equal(0, result.normalizedScore)
@@ -69,10 +76,10 @@ class TestCoverageEvaluator < TestCase
 
   def test_evaluate_empty_annotations_ontology
     input = 'melanoma'
-    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil)
+    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', @@cls_ont1, 0)
     annotations_all = [a1]
-    annotations_ontology = [ ]
-    result = @@coverage_evaluator.evaluate(input, annotations_all, annotations_ontology)
+    annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
+    result = @@coverage_evaluator.evaluate(input, annotations_all_hash, [])
     assert result != nil
     assert_equal(0, result.score)
     assert_equal(0, result.normalizedScore)
@@ -82,12 +89,13 @@ class TestCoverageEvaluator < TestCase
   end
 
   def test_get_annotation_score
-    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil)
-    a2 = @@custom_annotation.new(43, 45, 'SYN', 'ARM', nil)
-    a3 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', nil)
-    a4 = @@custom_annotation.new(48, 64, 'SYN', 'CAVITY OF STOMACH', nil)
-    assert_equal(@@pref_score, @@coverage_evaluator.get_annotation_score(a1))
-    assert_equal(@@syn_score, @@coverage_evaluator.get_annotation_score(a2))
+    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil, 0)
+    a2 = @@custom_annotation.new(43, 45, 'SYN', 'ARM', nil, 0)
+    a3 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', nil, 0)
+    a4 = @@custom_annotation.new(48, 64, 'SYN', 'CAVITY OF STOMACH', nil, 0)
+    # The send method bypasses encapsulation, allowing to call private methods
+    assert_equal(@@pref_score, @@coverage_evaluator.send(:get_annotation_score, a1))
+    assert_equal(@@syn_score, @@coverage_evaluator.send(:get_annotation_score, a2))
     assert_equal((@@multiterm_score + @@pref_score)*3, @@coverage_evaluator.get_annotation_score(a3))
     assert_equal((@@multiterm_score + @@syn_score)*3, @@coverage_evaluator.get_annotation_score(a4))
   end

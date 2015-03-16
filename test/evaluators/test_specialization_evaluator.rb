@@ -11,7 +11,10 @@ class TestSpecializationEvaluator < TestCase
   end
 
   def test_evaluate
-    specialization_evaluator = OntologyRecommender::Evaluators::SpecializationEvaluator.new
+    pref_score = 10
+    syn_score = 5
+    multiterm_score = 4
+    specialization_evaluator = OntologyRecommender::Evaluators::SpecializationEvaluator.new(pref_score, syn_score, multiterm_score)
     input = 'software, hormone'
     # Expected annotations:
     # - MCCLTEST-0 -> hormone
