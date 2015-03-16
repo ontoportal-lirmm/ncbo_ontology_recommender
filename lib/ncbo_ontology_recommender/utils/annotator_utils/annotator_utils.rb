@@ -19,8 +19,8 @@ module OntologyRecommender
                                                   ontologies: ontologies,
                                                   semantic_types: [],
                                                   filter_integers: false,
-                                                  expand_class_hierarchy: false,
-                                                  expand_hierarchy_levels: 0,
+                                                  expand_class_hierarchy: true,
+                                                  expand_hierarchy_levels: 5,
                                                   expand_with_mappings: false,
                                                   min_term_size: 0,
                                                   whole_word_only: true,
@@ -29,11 +29,10 @@ module OntologyRecommender
         custom_annotations = [ ]
         annotations.each do |ann|
           ann.annotations.each do |a|
-            custom_annotation = CustomAnnotation.new(a[:from], a[:to], a[:matchType], a[:text], ann.annotatedClass)
+            custom_annotation = CustomAnnotation.new(a[:from], a[:to], a[:matchType], a[:text], ann.annotatedClass, ann.hierarchy.size)
             custom_annotations.push(custom_annotation)
           end
         end
-
         # If the input type is 'keywords', only the annotations that represent whole keywords are kept.
         if input_type == 2
           custom_annotations = get_keyword_annotations(input, delimiter, custom_annotations)
