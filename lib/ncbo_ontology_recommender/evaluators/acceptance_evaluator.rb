@@ -15,12 +15,12 @@ module OntologyRecommender
         @w_bp = w_bp
         @w_umls = w_umls
         @umls_ontologies = nil
-        @avg_visits_hash = nil
+        @visits_hash = nil
       end
 
-      def evaluate(all_acronyms, ont_acronym)
-        bp_score = get_bp_score(ont_acronym, BP_VISITS_NUMBER_MONTHS)
-        umls_score = get_umls_score(all_acronyms, ont_acronym)
+      def evaluate(acronyms, ont_acronym, current_year = Time.now.year, current_month = Time.now.month)
+        bp_score = get_bp_score(ont_acronym, BP_VISITS_NUMBER_MONTHS, current_year, current_month)
+        umls_score = get_umls_score(acronyms, ont_acronym)
         norm_score = @w_bp * bp_score + @w_umls * umls_score
         return OntologyRecommender::Evaluators::AcceptanceResult.new(norm_score, bp_score, umls_score)
       end
@@ -39,44 +39,42 @@ module OntologyRecommender
 
       private
       # - num_months: number of months used to calculate the score (e.g. months = 6 => last 6 months)
-      def get_bp_score(ont_acronym, num_months)
-        if @avg_visits_hash == nil
-          @avg_visits_hash = get_avg_visits_for_period(num_months)
+      def get_bp_score(ont_acronym, num_months, current_year, current_month)
+        if @visits_hash == nil
+          @visits_hash = get_visits_for_period(num_months, current_year, current_month)
         end
         # log10 normalization and range change to [0,1]
-        norm_max_avg_visits = Math.log10(@avg_visits_hash.values.max)
-        ont_avg_visits = @avg_visits_hash[ont_acronym] || 0
-        if ont_avg_visits >= 1
-          norm_avg_visits = Math.log10(ont_avg_visits)
+        norm_max_visits = Math.log10(@visits_hash.values.max)
+        ont_visits = @visits_hash[ont_acronym]
+        raise StandardError, ('Ontology not found: ' + ont_acronym) if ont_visits.nil?
+        if ont_visits >= 1
+          norm_visits = Math.log10(ont_visits)
         else
-          norm_avg_visits = 0
+          norm_visits = 0
         end
-        bp_score = OntologyRecommender::Utils.normalize(norm_avg_visits, 0, norm_max_avg_visits, 0, 1)
+        bp_score = OntologyRecommender::Utils.normalize(norm_visits, 0, norm_max_visits, 0, 1)
         return bp_score
       end
 
-      # Return a hash |acronym, avg_visits| for the last num_months. The result is ranked by avg_visits
+      # Return a hash |acronym, visits| for the last num_months. The result is ranked by avg_visits
       private
-      def get_avg_visits_for_period(num_months)
+      def get_visits_for_period(num_months, current_year, current_month)
         # Visits for all BioPortal ontologies
         bp_all_visits = get_visits([])
-        periods = get_last_periods(num_months)
-        avg_visits = Hash.new
+        periods = get_last_periods(num_months, current_year, current_month)
+        period_visits = Hash.new
         bp_all_visits.each do |acronym, visits|
-          ont_visits_for_period = 0
+          period_visits[acronym] = 0
           periods.each do |p|
-            ont_visits_for_period += visits[p[0]][p[1]]
+            period_visits[acronym] += visits[p[0]][p[1]]
           end
-          avg_visits[acronym] = ont_visits_for_period.to_f / periods.size.to_f
         end
-        return avg_visits
+        return period_visits
       end
 
       private
       # Obtains an array of [year, month] elements for the last num_months
-      def get_last_periods(num_months)
-        year = Time.now.year
-        month = Time.now.month
+      def get_last_periods(num_months, year, month)
         # Array of [year, month] elements
         periods = [ ]
         num_months.times do
