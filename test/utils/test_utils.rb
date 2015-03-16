@@ -30,11 +30,11 @@ class TestUtils < TestCase
     cls4.submission = LinkedData::Models::OntologySubmission.new
     cls4.submission.ontology = LinkedData::Models::Ontology.new
     cls4.submission.ontology.acronym = 'ONT4'
-    a1 = @@custom_annotation.new(17, 26, 'PREF', 'BLOOD CELL', cls1)
-    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', cls2)
-    a3 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', cls3)
-    a4 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls2)
-    a5 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls4)
+    a1 = @@custom_annotation.new(17, 26, 'PREF', 'BLOOD CELL', cls1, 0)
+    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', cls2, 0)
+    a3 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', cls3, 0)
+    a4 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls2, 0)
+    a5 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls4, 0)
     coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
     selected_acronyms = OntologyRecommender::Utils.select_ontologies_for_ranking_sets([], coverage_evaluator)
     assert_equal([], selected_acronyms)
@@ -53,13 +53,13 @@ class TestUtils < TestCase
     syn_score = 5
     multiterm_score = 4
     coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
-    a1 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil)
-    a2 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil)
-    a3 = @@custom_annotation.new(1, 5, 'SYN', 'BLOOD', nil)
-    a4 = @@custom_annotation.new(1, 10, 'PREF', 'BLOOD CELL', nil)
-    a5 = @@custom_annotation.new(10, 13, 'PREF', 'HEAD', nil)
-    a6 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil)
-    a7 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil)
+    a1 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, 0)
+    a2 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, 0)
+    a3 = @@custom_annotation.new(1, 5, 'SYN', 'BLOOD', nil, 0)
+    a4 = @@custom_annotation.new(1, 10, 'PREF', 'BLOOD CELL', nil, 0)
+    a5 = @@custom_annotation.new(10, 13, 'PREF', 'HEAD', nil, 0)
+    a6 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil, 0)
+    a7 = @@custom_annotation.new(20, 22, 'PREF', 'ARM', nil, 0)
     assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a1], [a2], coverage_evaluator))
     assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a2], [a1], coverage_evaluator))
     assert_equal(true, OntologyRecommender::Utils.annotations_contained_in([a3], [a1], coverage_evaluator))

@@ -18,26 +18,26 @@ class TestAnnotatorUtils < TestCase
   def test_get_keyword_annotations
     input = 'melanoma, white blood cell, arm, cavity of stomach, melanoma'
     delimiter = ','
-    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil)
-    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', nil)
-    a3 = @@custom_annotation.new(29, 31, 'SYN', 'ARM', nil)
-    a4 = @@custom_annotation.new(17, 26, 'SYN', 'BLOOD CELL', nil)
-    a5 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', nil)
-    a6 = @@custom_annotation.new(34, 50, 'PREF', 'CAVITY OF STOMACH', nil)
-    a7 = @@custom_annotation.new(53, 60, 'PREF', 'MELANOMA', nil)
+    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil, 0)
+    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', nil, 0)
+    a3 = @@custom_annotation.new(29, 31, 'SYN', 'ARM', nil, 0)
+    a4 = @@custom_annotation.new(17, 26, 'SYN', 'BLOOD CELL', nil, 0)
+    a5 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', nil, 0)
+    a6 = @@custom_annotation.new(34, 50, 'PREF', 'CAVITY OF STOMACH', nil, 0)
+    a7 = @@custom_annotation.new(53, 60, 'PREF', 'MELANOMA', nil, 0)
     anns = OntologyRecommender::Utils::AnnotatorUtils.get_keyword_annotations(input, delimiter, [a1, a2, a3, a4, a5, a6, a7])
     exp_anns = [a1, a2, a3, a6, a7]
     assert_equal(exp_anns.sort, anns.sort)
   end
 
   def test_get_annotations_for_fragment
-    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil)
-    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', nil)
-    a3 = @@custom_annotation.new(29, 36, 'PREF', 'MELANOMA', nil)
-    a4 = @@custom_annotation.new(43, 45, 'SYN', 'ARM', nil)
-    a5 = @@custom_annotation.new(40, 55, 'PREF', 'WHITE BLOOD CELL', nil)
-    a6 = @@custom_annotation.new(17, 26, 'SYN', 'BLOOD CELL', nil)
-    a7 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', nil)
+    a1 = @@custom_annotation.new(1, 8, 'PREF', 'MELANOMA', nil, 0)
+    a2 = @@custom_annotation.new(11, 26, 'PREF', 'WHITE BLOOD CELL', nil, 0)
+    a3 = @@custom_annotation.new(29, 36, 'PREF', 'MELANOMA', nil, 0)
+    a4 = @@custom_annotation.new(43, 45, 'SYN', 'ARM', nil, 0)
+    a5 = @@custom_annotation.new(40, 55, 'PREF', 'WHITE BLOOD CELL', nil, 0)
+    a6 = @@custom_annotation.new(17, 26, 'SYN', 'BLOOD CELL', nil, 0)
+    a7 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', nil, 0)
     anns = OntologyRecommender::Utils::AnnotatorUtils.get_annotations_for_fragment(17, 21, [a1, a2, a3, a4, a5, a6, a7])
     exp_anns = [a6, a7]
     assert_equal(exp_anns.sort, anns.sort)

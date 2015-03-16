@@ -11,21 +11,22 @@ module OntologyRecommender
 
         include LinkedData::Hypermedia::Resource
 
-        attr_reader :from, :to, :matchType, :text, :annotatedClass
+        attr_reader :from, :to, :matchType, :text, :annotatedClass, :hierarchySize
 
         embed :annotatedClass
 
-        def initialize(from, to, match_type, text, annotatedClass)
+        def initialize(from, to, match_type, text, annotated_class, hierarchy_size)
           @from = from
           @to = to
           @matchType = match_type
           @text = text
-          @annotatedClass = annotatedClass
+          @annotatedClass = annotated_class
+          @hierarchySize = hierarchy_size
         end
 
         def == (other)
           from == other.from && to == other.to && matchType == other.matchType && text == other.text &&
-              annotatedClass == other.annotatedClass
+              annotatedClass == other.annotatedClass && hierarchySize == other.hierarchySize
         end
 
         # Makes eql? and == synonymous
@@ -34,12 +35,12 @@ module OntologyRecommender
         end
 
         def hash
-          [from, to, matchType, text, annotatedClass].hash
+          [from, to, matchType, text, annotatedClass, hierarchySize].hash
         end
 
         def <=> (other) #1 if self>other; 0 if self==other; -1 if self<other
-          [from, to, matchType, text, annotatedClass] <=>
-              [other.from, other.to, other.matchType, other.text, other.annotatedClass]
+          [from, to, matchType, text, annotatedClass, hierarchySize] <=>
+              [other.from, other.to, other.matchType, other.text, other.annotatedClass, other.hierarchySize]
         end
 
       end
