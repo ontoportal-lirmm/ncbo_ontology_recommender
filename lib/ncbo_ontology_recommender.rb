@@ -18,7 +18,7 @@ module OntologyRecommender
       @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
       @coverage_evaluator = nil
       @specialization_evaluator = nil
-      @annotations_all = nil
+      @annotations_all_hash = nil
       @settings = OntologyRecommender.settings
     end
 
@@ -55,7 +55,6 @@ module OntologyRecommender
       # Acceptance evaluation
       w_bp = @settings.w_bp
       w_umls = @settings.w_umls
-      w_pmed = @settings.w_pmed
       # Detail evaluation
       top_defs = @settings.top_defs
       top_syns = @settings.top_syns
@@ -65,15 +64,16 @@ module OntologyRecommender
       max_results_sets = @settings.max_results_sets
       # Evaluators initialization
       @coverage_evaluator = Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
-      @specialization_evaluator = Evaluators::SpecializationEvaluator.new
+      @specialization_evaluator = Evaluators::SpecializationEvaluator.new(pref_score, syn_score, multiterm_score)
       @acceptance_evaluator = Evaluators::AcceptanceEvaluator.new(w_bp, w_umls)
       @detail_evaluator = Evaluators::DetailEvaluator.new(top_defs, top_syns, top_props)
 
-      ranking = get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa,
-                                   wd, top_defs, top_syns, top_props, max_results_single)
+      ranking = get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa, wd, max_results_single)
+
       if output_type == 2
         ranking = get_ranking_sets(ranking, input, wc, ws, max_elements_set, max_results_sets)
       end
+
       end_time = Time.now
       @logger.info('Recommendation finished. Ranking size: ' + ranking.size.to_s +
                        '; Execution time: ' + (end_time-start_time).to_s + ' sec.')
@@ -82,36 +82,43 @@ module OntologyRecommender
 
     # Single ontology ranking. Each position contains an ontology.
     private
-    def get_ranking_single(input, input_type, delimiter, ontologies, wc,
-                           ws, wa, wd, top_defs, top_syns, top_props, max_results_single)
+    def get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa, wd, max_results_single)
       @logger.info('Computing single ranking')
       # Obtain all annotations for the input (annotations done with all BioPortal ontologies)
-      @annotations_all = Utils::AnnotatorUtils.get_annotations(input, input_type, delimiter, [])
-      if (!ontologies.empty?)
-        # Annotations for the picked ontologies
-        annotations_ont = @annotations_all.dup
-        annotations_ont.delete_if {|ann| (!ontologies.include? ann.annotatedClass.submission.ontology.acronym)}
-      else
-        annotations_ont = @annotations_all
-      end
-
-
+      time_annotations = Time.now
+      annotations_all = Utils::AnnotatorUtils.get_annotations(input, input_type, delimiter, [])
+      @logger.info('TIME - Obtain annotations: ' + (Time.now-time_annotations).to_s + ' sec.')
       # Store the annotations in a hash [ontology_acronym, annotation].
-      annotations_hash = annotations_ont.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
+      @annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
+      # Annotations for the picked ontologies
+      annotations_hash = @annotations_all_hash.dup
+      if (!ontologies.empty?)
+        annotations_hash.delete_if {|acr, _| (!ontologies.include? acr)}
+      end
       @logger.info('Ontologies that provide annotations: ' + annotations_hash.keys.size.to_s)
       ranking = []
+      time_coverage = 0
+      time_specialization = 0
+      time_acceptance = 0
+      time_detail = 0
       annotations_hash.keys.each do |ont_acronym|
         # Coverage evaluation
-        coverage_result = @coverage_evaluator.evaluate(input, @annotations_all, annotations_hash[ont_acronym])
-
+        time_coverage_ont = Time.now
+        coverage_result = @coverage_evaluator.evaluate(input, @annotations_all_hash, @annotations_all_hash[ont_acronym])
+        time_coverage += Time.now - time_coverage_ont
+        best_annotations_ont = @coverage_evaluator.best_annotations
         # Specialization evaluation
-        specialization_result = @specialization_evaluator.evaluate(annotations_hash, ont_acronym)
-
+        time_specialization_ont = Time.now
+        specialization_result = @specialization_evaluator.evaluate(@annotations_all_hash, ont_acronym)
+        time_specialization += Time.now - time_specialization_ont
         # Acceptance evaluation
+        time_acceptance_ont = Time.now
         acceptance_result = @acceptance_evaluator.evaluate(annotations_hash.keys, ont_acronym)
-
+        time_acceptance += Time.now - time_acceptance_ont
         # Detail of knowledge evaluation
-        detail_result = @detail_evaluator.evaluate(@annotations_all, annotations_hash[ont_acronym])
+        time_detail_ont = Time.now
+        detail_result = @detail_evaluator.evaluate(best_annotations_ont)
+        time_detail += Time.now - time_detail_ont
 
         aggregated_score = Scores::ScoreAggregator.
             get_aggregated_scores([Scores::Score.new(coverage_result.normalizedScore, wc),
@@ -122,10 +129,13 @@ module OntologyRecommender
         # TODO: move to Utils class
         ont = LinkedData::Models::Ontology.find(ont_acronym).first
         ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
-        ranking << Recommendation.new(aggregated_score, [ont], coverage_result,
-                                                     specialization_result, acceptance_result, detail_result)
-
+        ranking << Recommendation.new(aggregated_score, [ont], coverage_result, specialization_result, acceptance_result, detail_result)
       end
+      @logger.info('TIME - Coverage evaluation: ' + time_coverage.to_s + ' sec.')
+      @logger.info('TIME - Specialization evaluation: ' + time_specialization.to_s + ' sec.')
+      @logger.info('TIME - Acceptance evaluation: ' + time_acceptance.to_s + ' sec.')
+      @logger.info('TIME - Detail evaluation: ' + time_detail.to_s + ' sec.')
+
 
       ranking = ranking.sort_by {|element| element.evaluationScore.to_f}.reverse
 
@@ -141,11 +151,10 @@ module OntologyRecommender
       ranking_single.each do |r|
         single_results_hash[r.ontologies[0].acronym] = r
       end
-
       # Performance improvement: only a subset of the ontologies are selected as candidates
       # for the evaluation of ontology sets (generation of ontology combinations)
       annotations = [ ]
-      single_results_hash.each do |ont_acronym, r|
+      single_results_hash.each do |_, r|
         annotations.concat r.coverageResult.annotations
       end
       selected_onts = Utils.select_ontologies_for_ranking_sets(annotations, @coverage_evaluator)
@@ -169,7 +178,6 @@ module OntologyRecommender
       end
       onts_combinations = c2
       @logger.info('Selected combinations (performance improvement 2): ' + onts_combinations.size.to_s)
-
       count_combinations = 0
       # Evaluation of ontology sets
       ranking = [ ]
@@ -179,7 +187,7 @@ module OntologyRecommender
         set.each do |acronym|
           annotations_set += single_results_hash[acronym].coverageResult.annotations
         end
-        coverage_result_set = @coverage_evaluator.evaluate(input, @annotations_all, annotations_set)
+        coverage_result_set = @coverage_evaluator.evaluate(input, @annotations_all_hash, annotations_set)
         # NOTE: It may happen that after the coverage evaluation step, which selects the best annotations provided
         # by each set, some ontology/ontologies in the set do not provide any annotation. The evaluation is restricted
         # to those sets whose ontologies (all of them) provide at least one annotation
@@ -198,7 +206,6 @@ module OntologyRecommender
             end
             partial_coverage_scores[acronym] = sum
           end
-
           # TODO: these loops could be done in only one
           # Specialization evaluation for ontology sets
           spec_score_set = 0
