@@ -6,7 +6,7 @@ module OntologyRecommender
     ##
     # Ontology coverage evaluator
     class CoverageEvaluator
-      attr_reader :pref_score, :syn_score, :multiterm_score
+      attr_reader :pref_score, :syn_score, :multiterm_score, :best_annotations
       # - pref_score: score assigned to "PREF" annotations (done with a concept preferred name)
       # - syn_score: score assigned to "SYN" annotations (done with a concept synonym)
       # - multiterm_score: score assigned to annotations done with multi-word terms (e.g. white blood cell)
@@ -15,21 +15,23 @@ module OntologyRecommender
         @syn_score = syn_score
         @multiterm_score = multiterm_score
         @input = nil
-        @annotations_all = nil
         @top_score = nil
+        @best_annotations = nil
       end
 
-      def evaluate(input, annotations_all, annotations_ontology)
+      # - annotations: annotations done with a specific ontology or with a set of ontologies
+      def evaluate(input, annotations_all_hash, annotations)
         # Selects the best annotations for the input
-        best_annotations = select_best_annotations_for_input(input, annotations_ontology)
+        @best_annotations = select_best_annotations_for_input(input, annotations)
         # Computes the score for the selected annotations
         score = 0
-        best_annotations.each do |ann|
+        @best_annotations.each do |ann|
           score += get_annotation_score(ann)
         end
 
         # Prevents from computing the top score multiple times
-        if @top_score==nil or input != @input or annotations_all != @annotations_all
+        if @top_score==nil or input != @input
+          annotations_all = annotations_all_hash.values.flatten
           @top_score = get_top_coverage_score(input, annotations_all)
           @input = input
           @annotations_all = annotations_all
@@ -39,12 +41,12 @@ module OntologyRecommender
         normalized_score = @top_score == 0? 0 : (score.to_f / @top_score.to_f)
 
         # Number of terms and words covered
-        number_terms_covered = best_annotations.length
+        number_terms_covered = @best_annotations.length
         number_words_covered = 0
-        best_annotations.each do |ann| number_words_covered += ann.text.split(" ").length end
+        @best_annotations.each do |ann| number_words_covered += ann.text.split(" ").length end
 
         return OntologyRecommender::Evaluators::CoverageResult.
-            new(score, normalized_score, number_terms_covered, number_words_covered, best_annotations)
+            new(score, normalized_score, number_terms_covered, number_words_covered, @best_annotations)
       end
 
       def get_annotation_score(annotation)
