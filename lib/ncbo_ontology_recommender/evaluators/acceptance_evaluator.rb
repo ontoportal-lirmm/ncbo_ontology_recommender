@@ -12,6 +12,7 @@ module OntologyRecommender
       # - w_bp: weight assigned to the number of visits (pageviews) received by the ontology in BioPortal
       # - w_umls: weight assigned to the criteria "is the ontology included into UMLS?"
       def initialize(w_bp, w_umls)
+        @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
         @w_bp = w_bp
         @w_umls = w_umls
         @umls_ontologies = nil
@@ -44,13 +45,17 @@ module OntologyRecommender
           @visits_hash = get_visits_for_period(num_months, current_year, current_month)
         end
         # log10 normalization and range change to [0,1]
-        norm_max_visits = Math.log10(@visits_hash.values.max)
-        ont_visits = @visits_hash[ont_acronym]
-        raise StandardError, ('Ontology not found: ' + ont_acronym) if ont_visits.nil?
-        if ont_visits >= 1
-          norm_visits = Math.log10(ont_visits)
+        if (!@visits_hash.values.max.nil?) && (@visits_hash.values.max > 0)
+          norm_max_visits = Math.log10(@visits_hash.values.max)
         else
-          norm_visits = 0
+          norm_max_visits = 1
+        end
+        norm_visits = 0
+        ont_visits = @visits_hash[ont_acronym]
+        if ont_visits.nil?
+          @logger.info("Ontology not found (#{ont_acronym}). BioPortal score set to 0")
+        elsif ont_visits > 0
+          norm_visits = Math.log10(ont_visits)
         end
         bp_score = OntologyRecommender::Helpers.normalize(norm_visits, 0, norm_max_visits, 0, 1)
         return bp_score

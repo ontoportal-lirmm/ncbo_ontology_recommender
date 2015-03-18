@@ -33,7 +33,6 @@ class TestAcceptanceEvaluator < TestCase
 
   def test_get_bp_score
     assert(@@acceptance_evaluator.send(:get_bp_score, 'BROTEST-0', 12, 2015, 3) > 0, msg = 'The acceptance score should be greater than zero')
-    assert_raises(StandardError) {@@acceptance_evaluator.send(:get_bp_score, 'NOT_EXISTING_ONT', 12, 2015, 3)}
   end
 
   def test_get_visits_for_period
