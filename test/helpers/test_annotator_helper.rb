@@ -1,18 +1,23 @@
 require_relative '../test_case'
-require_relative '../../lib/ncbo_ontology_recommender/utils/annotator_utils/annotator_utils'
+require_relative '../../lib/ncbo_ontology_recommender/helpers/annotator_helpers/annotator_helper'
 
 
-class TestAnnotatorUtils < TestCase
+class TestAnnotatorHelper < TestCase
 
   def self.before_suite
-    @@custom_annotation = OntologyRecommender::Utils::AnnotatorUtils::CustomAnnotation
+    @@custom_annotation = OntologyRecommender::Helpers::AnnotatorHelper::CustomAnnotation
   end
 
   def self.after_suite
   end
 
   def test_get_annotations
-    # TODO
+    input = ''
+    input_type = 1
+    delimiter = ','
+    ontologies = []
+    result = OntologyRecommender::Helpers::AnnotatorHelper.get_annotations(input, input_type, delimiter, ontologies)
+    assert_equal([], result)
   end
 
   def test_get_keyword_annotations
@@ -25,7 +30,7 @@ class TestAnnotatorUtils < TestCase
     a5 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', nil, 0)
     a6 = @@custom_annotation.new(34, 50, 'PREF', 'CAVITY OF STOMACH', nil, 0)
     a7 = @@custom_annotation.new(53, 60, 'PREF', 'MELANOMA', nil, 0)
-    anns = OntologyRecommender::Utils::AnnotatorUtils.get_keyword_annotations(input, delimiter, [a1, a2, a3, a4, a5, a6, a7])
+    anns = OntologyRecommender::Helpers::AnnotatorHelper.get_keyword_annotations(input, delimiter, [a1, a2, a3, a4, a5, a6, a7])
     exp_anns = [a1, a2, a3, a6, a7]
     assert_equal(exp_anns.sort, anns.sort)
   end
@@ -38,7 +43,7 @@ class TestAnnotatorUtils < TestCase
     a5 = @@custom_annotation.new(40, 55, 'PREF', 'WHITE BLOOD CELL', nil, 0)
     a6 = @@custom_annotation.new(17, 26, 'SYN', 'BLOOD CELL', nil, 0)
     a7 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', nil, 0)
-    anns = OntologyRecommender::Utils::AnnotatorUtils.get_annotations_for_fragment(17, 21, [a1, a2, a3, a4, a5, a6, a7])
+    anns = OntologyRecommender::Helpers::AnnotatorHelper.get_annotations_for_fragment(17, 21, [a1, a2, a3, a4, a5, a6, a7])
     exp_anns = [a6, a7]
     assert_equal(exp_anns.sort, anns.sort)
   end
@@ -50,9 +55,9 @@ class TestAnnotatorUtils < TestCase
     reference_positions = []
     keywords.each do |k|
       start = input.index(k) + 1
-      reference_positions.push(OntologyRecommender::Utils::AnnotatorUtils::TextPosition.new(start, start + k.length-1))
+      reference_positions.push(OntologyRecommender::Helpers::AnnotatorHelper::TextPosition.new(start, start + k.length-1))
     end
-    keyword_positions = OntologyRecommender::Utils::AnnotatorUtils.get_keyword_positions(input, delimiter)
+    keyword_positions = OntologyRecommender::Helpers::AnnotatorHelper.get_keyword_positions(input, delimiter)
     assert_equal(reference_positions, keyword_positions)
   end
 

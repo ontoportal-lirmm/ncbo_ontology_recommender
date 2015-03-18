@@ -15,6 +15,7 @@ module OntologyRecommender
         annotator = Annotator::Models::NcboAnnotator.new
         # Obtains the annotations done with all BioPortal ontologies. All these annotations will be used later, to
         # compute the maximum coverage score possible, which will be used to normalize the coverage score
+        time_annotator = Time.now
         annotations = annotator.annotate(input, {
                                                   ontologies: ontologies,
                                                   semantic_types: [],
@@ -26,6 +27,7 @@ module OntologyRecommender
                                                   whole_word_only: true,
                                                   with_synonyms: true,
                                               })
+        @logger.info('TIME - Annotator call: ' + (Time.now-time_annotator).to_s + ' sec.')
         custom_annotations = [ ]
         annotations.each do |ann|
           ann.annotations.each do |a|
@@ -33,11 +35,13 @@ module OntologyRecommender
             custom_annotations.push(custom_annotation)
           end
         end
+        @logger.info('Annotations obtained: ' + custom_annotations.size.to_s)
         # If the input type is 'keywords', only the annotations that represent whole keywords are kept.
         if input_type == 2
           custom_annotations = get_keyword_annotations(input, delimiter, custom_annotations)
+          @logger.info('Annotations kept: ' + custom_annotations.size.to_s)
         end
-        @logger.info('Annotations obtained: ' + annotations.size.to_s + '; Annotations selected: ' + custom_annotations.size.to_s)
+
         return custom_annotations
       end
 

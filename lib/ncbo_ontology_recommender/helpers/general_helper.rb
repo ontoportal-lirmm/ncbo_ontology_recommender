@@ -9,9 +9,6 @@ module OntologyRecommender
     # The rules used to select the ontologies are:
     # - If the annotations done with an ontology O1 include the annotations done with another ontology, O2, then O2
     # can be ignored and it will not be taken into account to generate ontology combinations.
-    # TODO:
-    # - If one particular annotation is done with several ontologies, then the ontology that has a better
-    # evaluation score (excluding the coverage criteria) will be selected and the other ones will be ignored.
     module_function
     def select_ontologies_for_ranking_sets(annotations, coverage_evaluator)
       annotations_hash = annotations.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
@@ -49,13 +46,9 @@ module OntologyRecommender
             if a2_score >= a1_score
               contained = true
               break
+              # If two annotations provide exactly the same coverage the following "elsif" could be used to give more priority
+              # to one of them using other criteria (e.g. the acceptance of the ontology they belong to)
               # elsif a2_score == a1_score
-              #   # TODO: complete when all the evaluators are implemented. It is necessary to give more priority to one
-              #   # ontology than to another. Currently an alphabetical comparison is done
-              #   if a1.ontologyAcronym > a2.ontologyAcronym
-              #     contained = true
-              #   end
-              #   break
             end
           end
         end
@@ -106,17 +99,6 @@ module OntologyRecommender
     def get_ont_acronym_from_uri(uri)
       uri_parts = uri.split("/")
       return uri_parts[uri_parts.length-1]
-    end
-
-    # TODO: one call for all the ontologies?
-    module_function
-    def get_number_of_classes(ont_acronym)
-      ont = LinkedData::Models::Ontology.find(ont_acronym)
-      raise StandardError, ('Ontology not found: ' + ont_acronym) if ont.nil?
-      # Retrieves submission
-      sub = ont.first.latest_submission
-      cls_count = LinkedData::Models::Class.where.in(sub).count
-      return cls_count || 0
     end
 
     module_function
