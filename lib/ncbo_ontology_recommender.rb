@@ -1,6 +1,6 @@
 require 'logger'
 require_relative 'ncbo_ontology_recommender/config'
-require_relative 'ncbo_ontology_recommender/utils/annotator_utils/annotator_utils'
+require_relative 'ncbo_ontology_recommender/helpers/annotator_helpers/annotator_helper'
 require_relative 'ncbo_ontology_recommender/evaluators/coverage_evaluator'
 require_relative 'ncbo_ontology_recommender/evaluators/specialization_evaluator'
 require_relative 'ncbo_ontology_recommender/evaluators/acceptance_evaluator'
@@ -8,7 +8,7 @@ require_relative 'ncbo_ontology_recommender/evaluators/detail_evaluator'
 require_relative 'ncbo_ontology_recommender/scores/score_aggregator'
 require_relative 'ncbo_ontology_recommender/scores/score'
 require_relative 'recommendation'
-require_relative 'ncbo_ontology_recommender/utils/utils'
+require_relative 'ncbo_ontology_recommender/helpers/general_helper'
 
 module OntologyRecommender
 
@@ -43,8 +43,8 @@ module OntologyRecommender
       start_time = Time.now
       # Weights normalization (if necessary)
       if (wc + ws + wa + wd != 1)
-        wc, ws, wa, wd  = Utils.normalize_weights([wc, ws, wa, wd])
-        @logger.info('Normalized weights: wc: ' + wc.round(2).to_s + '; ws: ' + ws.round(2).to_s + '; wa: ' + wa.round(2).to_s + '; wd: ' + wd.round(2).to_s)
+        wc, ws, wa, wd  = Helpers.normalize_weights([wc, ws, wa, wd])
+        @logger.info('Normalized weights: wc: ' + wc.round(3).to_s + '; ws: ' + ws.round(3).to_s + '; wa: ' + wa.round(3).to_s + '; wd: ' + wd.round(3).to_s)
       end
       # Keywords delimiter char
       delimiter = @settings.delimiter
@@ -68,15 +68,18 @@ module OntologyRecommender
       @acceptance_evaluator = Evaluators::AcceptanceEvaluator.new(w_bp, w_umls)
       @detail_evaluator = Evaluators::DetailEvaluator.new(top_defs, top_syns, top_props)
 
+      time_single = Time.now
       ranking = get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa, wd, max_results_single)
+      @logger.info('TIME - Obtain single ranking: ' + (Time.now-time_single).to_s + ' sec.')
 
       if output_type == 2
+        time_sets = Time.now
         ranking = get_ranking_sets(ranking, input, wc, ws, max_elements_set, max_results_sets)
+        @logger.info('TIME - Obtain sets ranking: ' + (Time.now-time_sets).to_s + ' sec.')
       end
 
-      end_time = Time.now
       @logger.info('Recommendation finished. Ranking size: ' + ranking.size.to_s +
-                       '; Execution time: ' + (end_time-start_time).to_s + ' sec.')
+                       '; Execution time: ' + (Time.now-start_time).to_s + ' sec.')
       return ranking
     end
 
@@ -86,7 +89,7 @@ module OntologyRecommender
       @logger.info('Computing single ranking')
       # Obtain all annotations for the input (annotations done with all BioPortal ontologies)
       time_annotations = Time.now
-      annotations_all = Utils::AnnotatorUtils.get_annotations(input, input_type, delimiter, [])
+      annotations_all = Helpers::AnnotatorHelper.get_annotations(input, input_type, delimiter, [])
       @logger.info('TIME - Obtain annotations: ' + (Time.now-time_annotations).to_s + ' sec.')
       # Store the annotations in a hash [ontology_acronym, annotation].
       @annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
@@ -101,6 +104,7 @@ module OntologyRecommender
       time_specialization = 0
       time_acceptance = 0
       time_detail = 0
+      time_retrieve_onts = 0
       annotations_hash.keys.each do |ont_acronym|
         # Coverage evaluation
         time_coverage_ont = Time.now
@@ -117,26 +121,22 @@ module OntologyRecommender
         time_acceptance += Time.now - time_acceptance_ont
         # Detail of knowledge evaluation
         time_detail_ont = Time.now
-        detail_result = @detail_evaluator.evaluate(best_annotations_ont)
+        detail_result = @detail_evaluator.evaluate(@annotations_all_hash, best_annotations_ont)
         time_detail += Time.now - time_detail_ont
 
         aggregated_score = Scores::ScoreAggregator.
             get_aggregated_scores([Scores::Score.new(coverage_result.normalizedScore, wc),
                                    Scores::Score.new(specialization_result.normalizedScore, ws),
                                    Scores::Score.new(acceptance_result.normalizedScore, wa),
-                                   Scores::Score.new(detail_result.normalizedScore, wd)])
-        # Loads the ontology information
-        # TODO: move to Utils class
-        ont = LinkedData::Models::Ontology.find(ont_acronym).first
-        ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
+                                   Scores::Score.new(detail_result.normalizedScore, wd)]).round(3)
+        ont = annotations_hash[ont_acronym].first.annotatedClass.submission.ontology
         ranking << Recommendation.new(aggregated_score, [ont], coverage_result, specialization_result, acceptance_result, detail_result)
       end
-      @logger.info('TIME - Coverage evaluation: ' + time_coverage.to_s + ' sec.')
-      @logger.info('TIME - Specialization evaluation: ' + time_specialization.to_s + ' sec.')
-      @logger.info('TIME - Acceptance evaluation: ' + time_acceptance.to_s + ' sec.')
-      @logger.info('TIME - Detail evaluation: ' + time_detail.to_s + ' sec.')
-
-
+      @logger.info('TIME - Coverage evaluation: ' + time_coverage.round(3).to_s + ' sec.')
+      @logger.info('TIME - Specialization evaluation: ' + time_specialization.round(3).to_s + ' sec.')
+      @logger.info('TIME - Acceptance evaluation: ' + time_acceptance.round(3).to_s + ' sec.')
+      @logger.info('TIME - Detail evaluation: ' + time_detail.round(3).to_s + ' sec.')
+      @logger.info('TIME - Retrieve ontologies: ' + time_retrieve_onts.round(3).to_s + ' sec.')
       ranking = ranking.sort_by {|element| element.evaluationScore.to_f}.reverse
 
       return ranking[0..max_results_single-1]
@@ -157,11 +157,11 @@ module OntologyRecommender
       single_results_hash.each do |_, r|
         annotations.concat r.coverageResult.annotations
       end
-      selected_onts = Utils.select_ontologies_for_ranking_sets(annotations, @coverage_evaluator)
+      selected_onts = Helpers.select_ontologies_for_ranking_sets(annotations, @coverage_evaluator)
       @logger.info('Selected ontologies (performance improvement 1): ' + selected_onts.size.to_s)
 
       # Calculates all the combinations of ontology acronyms
-      onts_combinations = Utils.get_combinations(selected_onts, max_elements_set)
+      onts_combinations = Helpers.get_combinations(selected_onts, max_elements_set)
       @logger.info('All combinations: ' + onts_combinations.size.to_s)
       # Performance improvement: if the maximum coverage score possible for an ontology set is lower or equal than the
       # coverage provided by the first ontology in the single ranking, the combination is directly discarded because
@@ -206,7 +206,7 @@ module OntologyRecommender
             end
             partial_coverage_scores[acronym] = sum
           end
-          # TODO: these loops could be done in only one
+
           # Specialization evaluation for ontology sets
           spec_score_set = 0
           spec_norm_score_set = 0
@@ -252,14 +252,18 @@ module OntologyRecommender
                                      Scores::Score.new(specialization_result_set.normalizedScore, ws),
                                      Scores::Score.new(detail_result_set.normalizedScore, ws)])
 
-          onts = set.map { |acronym| OntologyRecommender::Utils.get_ontology(acronym) }
+          onts = set.map { |acronym| annotations_hash[acronym].first.annotatedClass.submission.ontology }
 
           ranking << Recommendation.new(aggregated_score_set, onts, coverage_result_set,
                                                        specialization_result_set, acceptance_result_set, detail_result_set)
         end
       end
       @logger.info('Selected combinations (performance improvement 3): ' + count_combinations.to_s)
-      # Sort by two conditions: (1) Evaluation score, (2) Set size
+      # Concat the single ranking
+      # if ranking.size < max_results_sets
+      #   ranking.concat(ranking_single)
+      # end
+      # Sort by two criteria: (1) Evaluation score, (2) Set size
       ranking = ranking.sort_by {|element| [-element.evaluationScore.to_f, element.ontologies.size]}
       return ranking[0..max_results_sets-1]
     end
