@@ -18,9 +18,9 @@ module OntologyRecommender
         @features_count_hash = nil
       end
 
-      def evaluate(best_annotations_ont)
+      def evaluate(annotations_all_hash, best_annotations_ont)
         if @features_count_hash.nil?
-          @features_count_hash = get_features_count_hash(best_annotations_ont)
+          @features_count_hash = get_features_count_hash(annotations_all_hash.values.flatten)
         end
         sum_defs = 0
         sum_syns = 0
@@ -37,8 +37,8 @@ module OntologyRecommender
         detail_score_syns = sum_syns.to_f / best_annotations_ont.size.to_f
         detail_score_props = sum_props.to_f / best_annotations_ont.size.to_f
         detail_score = (detail_score_defs + detail_score_syns + detail_score_props).to_f / 3.to_f
-        return OntologyRecommender::Evaluators::DetailResult.new(detail_score, detail_score_defs,
-                                                                 detail_score_syns, detail_score_props)
+        return OntologyRecommender::Evaluators::DetailResult.new(detail_score.round(3), detail_score_defs.round(3),
+                                                                 detail_score_syns.round(3), detail_score_props.round(3))
       end
 
       private
