@@ -46,7 +46,7 @@ module OntologyRecommender
         @best_annotations.each do |ann| number_words_covered += ann.text.split(" ").length end
 
         return OntologyRecommender::Evaluators::CoverageResult.
-            new(score, normalized_score, number_terms_covered, number_words_covered, @best_annotations)
+            new(score.round(3), normalized_score.round(3), number_terms_covered, number_words_covered, @best_annotations)
       end
 
       def get_annotation_score(annotation)
@@ -70,7 +70,7 @@ module OntologyRecommender
         while from < input.length
           to = from + 1
           # Obtains all annotations for a text fragment
-          annotations_for_fragment = OntologyRecommender::Utils::AnnotatorUtils.get_annotations_for_fragment(from, to, annotations)
+          annotations_for_fragment = OntologyRecommender::Helpers::AnnotatorHelper.get_annotations_for_fragment(from, to, annotations)
           if annotations_for_fragment.length > 0
             scores_hash = Hash[annotations_for_fragment.collect { |ann| [ann, get_annotation_score(ann)] }]
             # Keeps only the best annotation. If there are several annotations with the same score, only one of them

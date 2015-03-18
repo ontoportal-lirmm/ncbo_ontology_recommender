@@ -22,13 +22,13 @@ module OntologyRecommender
         bp_score = get_bp_score(ont_acronym, BP_VISITS_NUMBER_MONTHS, current_year, current_month)
         umls_score = get_umls_score(acronyms, ont_acronym)
         norm_score = @w_bp * bp_score + @w_umls * umls_score
-        return OntologyRecommender::Evaluators::AcceptanceResult.new(norm_score, bp_score, umls_score)
+        return OntologyRecommender::Evaluators::AcceptanceResult.new(norm_score.round(3), bp_score.round(3), umls_score.round(3))
       end
 
       private
       def get_umls_score(all_acronyms, ont_acronym)
         if @umls_ontologies == nil
-          @umls_ontologies = OntologyRecommender::Utils.get_umls_ontologies(all_acronyms)
+          @umls_ontologies = OntologyRecommender::Helpers.get_umls_ontologies(all_acronyms)
         end
         if @umls_ontologies.include? ont_acronym
           return 1
@@ -52,7 +52,7 @@ module OntologyRecommender
         else
           norm_visits = 0
         end
-        bp_score = OntologyRecommender::Utils.normalize(norm_visits, 0, norm_max_visits, 0, 1)
+        bp_score = OntologyRecommender::Helpers.normalize(norm_visits, 0, norm_max_visits, 0, 1)
         return bp_score
       end
 

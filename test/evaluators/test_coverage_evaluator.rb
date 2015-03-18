@@ -8,7 +8,7 @@ class TestCoverageEvaluator < TestCase
     @@syn_score = 5
     @@multiterm_score = 4
     @@coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(@@pref_score, @@syn_score, @@multiterm_score)
-    @@custom_annotation = OntologyRecommender::Utils::AnnotatorUtils::CustomAnnotation
+    @@custom_annotation = OntologyRecommender::Helpers::AnnotatorHelper::CustomAnnotation
     @@cls_ont1 = LinkedData::Models::Class.new
     @@cls_ont1.submission = LinkedData::Models::OntologySubmission.new
     @@cls_ont1.submission.ontology = LinkedData::Models::Ontology.new
@@ -41,7 +41,7 @@ class TestCoverageEvaluator < TestCase
     ont_score = @@coverage_evaluator.get_annotation_score(a6) + @@coverage_evaluator.get_annotation_score(a7) +
         @@coverage_evaluator.get_annotation_score(a8)
     assert_equal(ont_score, result.score)
-    assert_equal(ont_score.to_f / top_score.to_f, result.normalizedScore)
+    assert_in_delta(ont_score.to_f / top_score.to_f, result.normalizedScore)
     assert_equal(3, result.numberTermsCovered)
     assert_equal(5, result.numberWordsCovered)
     assert_equal(3, result.annotations.size)

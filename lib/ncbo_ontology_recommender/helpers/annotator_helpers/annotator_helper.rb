@@ -3,13 +3,14 @@ require_relative('text_position')
 
 module OntologyRecommender
 
-  module Utils
+  module Helpers
 
-    module AnnotatorUtils
+    module AnnotatorHelper
       # Obtain the annotations for an input (text or keywords).
       #   Input types: 1 (text), 2 (keywords).
       module_function
       def get_annotations(input, input_type, delimiter, ontologies)
+        if input.strip.size == 0 then return [] end
         logger =  @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
         logger.info('Obtaining annotations from the Annotator')
         annotator = Annotator::Models::NcboAnnotator.new

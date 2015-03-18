@@ -1,6 +1,6 @@
 module OntologyRecommender
 
-  module Utils
+  module Helpers
 
     # Given the large number of ontologies in BioPortal, it is necessary to minimize the number of ontologies that
     # will be used to create the ontology sets that will be evaluated. Otherwise, the number of ontology sets will

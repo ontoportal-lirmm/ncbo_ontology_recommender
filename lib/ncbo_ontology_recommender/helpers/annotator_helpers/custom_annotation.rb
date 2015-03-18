@@ -1,8 +1,8 @@
 module OntologyRecommender
 
-  module Utils
+  module Helpers
 
-    module AnnotatorUtils
+    module AnnotatorHelper
 
       ##
       # This class represents a mapping between a term and an ontology class. A term can be composed by a unique word
