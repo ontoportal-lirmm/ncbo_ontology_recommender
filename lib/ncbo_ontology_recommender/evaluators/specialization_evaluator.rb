@@ -31,11 +31,10 @@ module OntologyRecommender
               spec_score += get_annotation_score(ann) + (2 * ann.hierarchySize)
             end
             # Number of classes in the ontology
-            begin
-              num_classes = get_number_of_classes(ont_acronym)
-            rescue StandardError => e
+            num_classes = get_number_of_classes(ont_acronym)
+            if num_classes.nil?
               spec_score = 0
-              @logger.info("Ontology not found (#{ont_acronym}) at #{e.backtrace.first}. Specialization score set to 0")
+              @logger.info("Ontology not found (#{ont_acronym}). Specialization score set to 0")
             else
               # Normalization by ontology size
               spec_score = (spec_score / Math.log10(num_classes)).round(3)
@@ -79,10 +78,13 @@ module OntologyRecommender
         else
           @logger.info("Ontology metrics not found (#{ont_acronym})")
           ont = LinkedData::Models::Ontology.find(ont_acronym)
-          raise StandardError, ('Ontology not found: ' + ont_acronym) if ont.nil?
-          # Retrieves submission
-          sub = ont.first.latest_submission
-          cls_count = LinkedData::Models::Class.where.in(sub).count
+          if ont.nil?
+            cls_count = nil
+          else
+            # Retrieves submission
+            sub = ont.first.latest_submission
+            cls_count = LinkedData::Models::Class.where.in(sub).count
+          end
         end
         return cls_count
       end
