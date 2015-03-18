@@ -1,7 +1,6 @@
 require_relative '../test_case'
 require_relative '../../lib/ncbo_ontology_recommender/helpers/annotator_helpers/annotator_helper'
 
-
 class TestAnnotatorHelper < TestCase
 
   def self.before_suite
@@ -11,13 +10,35 @@ class TestAnnotatorHelper < TestCase
   def self.after_suite
   end
 
-  def test_get_annotations
+  def test_get_annotations_empty_input
     input = ''
     input_type = 1
     delimiter = ','
     ontologies = []
     result = OntologyRecommender::Helpers::AnnotatorHelper.get_annotations(input, input_type, delimiter, ontologies)
     assert_equal([], result)
+  end
+
+  def test_get_annotations_text
+    input = 'hormone, pancreatic hormone'
+    # Ontology classes: MCCLTEST-0 -> hormone, pancreatic hormone'
+    # Expected annotations: MCCLTEST-0 -> hormone, pancreatic hormone, hormone'
+    input_type = 1
+    delimiter = ','
+    ontologies = ['MCCLTEST-0']
+    result = OntologyRecommender::Helpers::AnnotatorHelper.get_annotations(input, input_type, delimiter, ontologies)
+    assert_equal(3, result.size)
+  end
+
+  def test_get_annotations_keywords
+    input = 'hormone, pancreatic hormone'
+    # Ontology classes: MCCLTEST-0 -> hormone, pancreatic hormone'
+    # Expected annotations: MCCLTEST-0 -> hormone, pancreatic hormone'
+    input_type = 2
+    delimiter = ','
+    ontologies = ['MCCLTEST-0']
+    result = OntologyRecommender::Helpers::AnnotatorHelper.get_annotations(input, input_type, delimiter, ontologies)
+    assert_equal(2, result.size)
   end
 
   def test_get_keyword_annotations
