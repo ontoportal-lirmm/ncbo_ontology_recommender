@@ -61,7 +61,7 @@ module OntologyRecommender
         return bp_score
       end
 
-      # Return a hash |acronym, visits| for the last num_months. The result is ranked by avg_visits
+      # Return a hash |acronym, visits| for the last num_months. The result is ranked by visits
       private
       def get_visits_for_period(num_months, current_year, current_month)
         # Visits for all BioPortal ontologies
