@@ -5,9 +5,9 @@ require_relative '../../lib/ncbo_ontology_recommender/helpers/general_helper'
 class TestSpecializationEvaluator < TestCase
 
   def self.before_suite
-    pref_score = 10
-    syn_score = 5
-    multiterm_score = 4
+    pref_score = OntologyRecommender.settings.pref_score
+    syn_score = OntologyRecommender.settings.syn_score
+    multiterm_score = OntologyRecommender.settings.multiterm_score
     @@specialization_evaluator = OntologyRecommender::Evaluators::SpecializationEvaluator.new(pref_score, syn_score, multiterm_score)
   end
 

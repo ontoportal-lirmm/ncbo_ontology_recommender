@@ -5,9 +5,9 @@ require_relative '../../lib/ncbo_ontology_recommender/helpers/general_helper'
 class TestSpecializationEvaluator < TestCase
 
   def self.before_suite
-    top_defs = 1
-    top_syns = 3
-    top_props = 17
+    top_defs = OntologyRecommender.settings.top_defs
+    top_syns = OntologyRecommender.settings.top_syns
+    top_props = OntologyRecommender.settings.top_props
     @@detail_evaluator = OntologyRecommender::Evaluators::DetailEvaluator.new(top_defs, top_syns, top_props)
   end
 

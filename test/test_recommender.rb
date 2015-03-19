@@ -4,6 +4,10 @@ class TestRecommender < TestCase
 
   def self.before_suite
     @@recommender = OntologyRecommender::Recommender.new
+    @@wc = OntologyRecommender.settings.wc
+    @@ws = OntologyRecommender.settings.ws
+    @@wa = OntologyRecommender.settings.wa
+    @@wd = OntologyRecommender.settings.wd
   end
 
   def self.after_suite
@@ -16,17 +20,16 @@ class TestRecommender < TestCase
     output_type = 1
     max_elements_set = nil
     ontologies = [ ]
-    wc, ws, wa, wd = [0.55, 0.15, 0.15, 0.15]
-    assert_raises(ArgumentError) {@@recommender.recommend(nil, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend([ ], input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, 0, output_type, max_elements_set, ontologies, wc, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, 0, max_elements_set, ontologies, wc, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, 2, 0, ontologies, wc, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, 2, nil, ontologies, wc, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, -1, ws, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, -1, wa, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, -1, wd)}
-    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, -1)}
+    assert_raises(ArgumentError) {@@recommender.recommend(nil, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend([ ], input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, 0, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, 0, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, 2, 0, ontologies, @@wc, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, 2, nil, ontologies, @@wc, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, -1, @@ws, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, -1, @@wa, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, -1, @@wd)}
+    assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, -1)}
     assert_raises(ArgumentError) {@@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, 0, 0, 0, 0)}
   end
 
@@ -38,8 +41,7 @@ class TestRecommender < TestCase
     max_elements_set = nil
     # All loaded ontologies will be used
     ontologies = [ ]
-    wc, ws, wa, wd = [0.55, 0.15, 0.15, 0.15]
-    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)
+    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)
     # Expected ranking:
     # 1st) MCCLTEST-0 -> hormone antagonists
     # 2nd) ONTOMATEST-0 -> article
@@ -68,8 +70,7 @@ class TestRecommender < TestCase
     max_elements_set = 3
     # All loaded ontologies will be used
     ontologies = [ ]
-    wc, ws, wa, wd = [0.55, 0.15, 0.15, 0.15]
-    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)
+    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)
     # Expected ranking:
     # 1st) MCCLTEST-0, ONTOMATEST-0 -> article, hormone antagonists
     assert_equal(1, recommendations.length, msg='Failed to return 1 recommendation')
@@ -96,8 +97,7 @@ class TestRecommender < TestCase
     max_elements_set = nil
     # All loaded ontologies will be used
     ontologies = [ ]
-    wc, ws, wa, wd = [0.55, 0.15, 0.15, 0.15]
-    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)
+    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)
     # Expected ranking:
     # 1st) MCCLTEST-0 -> hormone, pancreatic hormone
     # 2nd) BROTEST-0 -> software
@@ -130,8 +130,7 @@ class TestRecommender < TestCase
     max_elements_set = 3
     # All loaded ontologies will be used
     ontologies = [ ]
-    wc, ws, wa, wd = [0.55, 0.15, 0.15, 0.15]
-    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)
+    recommendations = @@recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, @@wc, @@ws, @@wa, @@wd)
     # Expected ranking:
     # 1st) MCCLTEST-0, BROTEST-0 -> software, hormone, pancreatic hormone
     assert_equal(1, recommendations.length, msg='Failed to return 1 recommendation')

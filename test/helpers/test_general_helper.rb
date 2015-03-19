@@ -5,15 +5,15 @@ class TestUtils < TestCase
   def self.before_suite
     @@custom_annotation = OntologyRecommender::Helpers::AnnotatorHelper::CustomAnnotation
     @@helpers = OntologyRecommender::Helpers
+    @@pref_score = OntologyRecommender.settings.pref_score
+    @@syn_score = OntologyRecommender.settings.syn_score
+    @@multiterm_score = OntologyRecommender.settings.multiterm_score
   end
 
   def self.after_suite
   end
 
   def test_select_ontologies_for_ranking_sets
-    pref_score = 10
-    syn_score = 5
-    multiterm_score = 4
     cls1 = LinkedData::Models::Class.new
     cls1.submission = LinkedData::Models::OntologySubmission.new
     cls1.submission.ontology = LinkedData::Models::Ontology.new
@@ -35,7 +35,7 @@ class TestUtils < TestCase
     a3 = @@custom_annotation.new(17, 21, 'PREF', 'BLOOD', cls3, 0)
     a4 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls2, 0)
     a5 = @@custom_annotation.new(17, 21, 'SYN', 'BLOOD', cls4, 0)
-    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
+    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(@@pref_score, @@syn_score, @@multiterm_score)
     selected_acronyms = @@helpers.select_ontologies_for_ranking_sets([], coverage_evaluator)
     assert_equal([], selected_acronyms)
     selected_acronyms = @@helpers.select_ontologies_for_ranking_sets([a1], coverage_evaluator)
@@ -49,10 +49,7 @@ class TestUtils < TestCase
   end
 
   def test_annotations_contained_in
-    pref_score = 10
-    syn_score = 5
-    multiterm_score = 4
-    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
+    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(@@pref_score, @@syn_score, @@multiterm_score)
     a1 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, 0)
     a2 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, 0)
     a3 = @@custom_annotation.new(1, 5, 'SYN', 'BLOOD', nil, 0)
@@ -76,10 +73,7 @@ class TestUtils < TestCase
     assert_equal(false, @@helpers.annotations_contained_in([a6, a2], [a3, a7], coverage_evaluator))
   end
   def test_annotations_contained_in_2
-    pref_score = 10
-    syn_score = 5
-    multiterm_score = 4
-    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
+    coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(@@pref_score, @@syn_score, @@multiterm_score)
     a1 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, 0)
     a2 = @@custom_annotation.new(1, 5, 'PREF', 'BLOOD', nil, 0)
     a3 = @@custom_annotation.new(1, 5, 'SYN', 'BLOOD', nil, 0)

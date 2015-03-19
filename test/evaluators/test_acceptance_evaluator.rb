@@ -4,8 +4,8 @@ require_relative '../../lib/ncbo_ontology_recommender/evaluators/acceptance_eval
 class TestAcceptanceEvaluator < TestCase
 
   def self.before_suite
-    @@w_bp = 0.5
-    @@w_umls = 0.5
+    @@w_bp = OntologyRecommender.settings.w_bp
+    @@w_umls = OntologyRecommender.settings.w_umls
     @@acceptance_evaluator = OntologyRecommender::Evaluators::AcceptanceEvaluator.new(@@w_bp, @@w_umls)
   end
 
