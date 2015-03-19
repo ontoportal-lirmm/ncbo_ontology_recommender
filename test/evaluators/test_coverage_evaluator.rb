@@ -4,9 +4,9 @@ require_relative '../../lib/ncbo_ontology_recommender/evaluators/coverage_evalua
 class TestCoverageEvaluator < TestCase
 
   def self.before_suite
-    @@pref_score = 10
-    @@syn_score = 5
-    @@multiterm_score = 4
+    @@pref_score = OntologyRecommender.settings.pref_score
+    @@syn_score = OntologyRecommender.settings.syn_score
+    @@multiterm_score = OntologyRecommender.settings.multiterm_score
     @@coverage_evaluator = OntologyRecommender::Evaluators::CoverageEvaluator.new(@@pref_score, @@syn_score, @@multiterm_score)
     @@custom_annotation = OntologyRecommender::Helpers::AnnotatorHelper::CustomAnnotation
     @@cls_ont1 = LinkedData::Models::Class.new
@@ -94,10 +94,41 @@ class TestCoverageEvaluator < TestCase
     a3 = @@custom_annotation.new(48, 64, 'PREF', 'CAVITY OF STOMACH', nil, 0)
     a4 = @@custom_annotation.new(48, 64, 'SYN', 'CAVITY OF STOMACH', nil, 0)
     # The send method bypasses encapsulation, allowing to call private methods
-    assert_equal(@@pref_score, @@coverage_evaluator.send(:get_annotation_score, a1))
-    assert_equal(@@syn_score, @@coverage_evaluator.send(:get_annotation_score, a2))
+    assert_equal(@@pref_score, @@coverage_evaluator.get_annotation_score(a1))
+    assert_equal(@@syn_score, @@coverage_evaluator.get_annotation_score(a2))
     assert_equal((@@multiterm_score + @@pref_score)*3, @@coverage_evaluator.get_annotation_score(a3))
     assert_equal((@@multiterm_score + @@syn_score)*3, @@coverage_evaluator.get_annotation_score(a4))
+  end
+
+  def test_select_best_annotations_for_input
+    input = 'primary treatment'
+    a1 = @@custom_annotation.new(1, 5, 'PREF', 'PRIMARY', nil, 0)
+    a2 = @@custom_annotation.new(9, 17, 'PREF', 'TREATMENT', nil, 0)
+    a3 = @@custom_annotation.new(1, 17, 'PREF', 'PRIMARY TREATMENT', nil, 0)
+    a4 = @@custom_annotation.new(1, 5, 'SYN', 'PRIMARY', nil, 0)
+    a5 = @@custom_annotation.new(9, 17, 'SYN', 'TREATMENT', nil, 0)
+    a6 = @@custom_annotation.new(1, 17, 'SYN', 'PRIMARY TREATMENT', nil, 0)
+    assert_equal([a1, a2], @@coverage_evaluator.send(:select_best_annotations_for_input, input, [a1, a2]))
+    assert_equal([a3], @@coverage_evaluator.send(:select_best_annotations_for_input, input, [a1, a2, a3, a4, a5, a6]))
+    assert_equal([a3], @@coverage_evaluator.send(:select_best_annotations_for_input, input, [a1, a2, a3]))
+    assert_equal([a1, a2], @@coverage_evaluator.send(:select_best_annotations_for_input, input, [a1, a2, a4, a5]))
+    # We prefer one SYN annotation that covers two words than two PREF annotations
+    assert_equal([a6], @@coverage_evaluator.send(:select_best_annotations_for_input, input, [a1, a2, a6]))
+  end
+
+  def test_get_top_coverage_score
+    input = 'primary treatment'
+    a1 = @@custom_annotation.new(1, 5, 'PREF', 'PRIMARY', @@cls_ont1, 0)
+    a2 = @@custom_annotation.new(9, 17, 'PREF', 'TREATMENT', @@cls_ont1, 0)
+    a3 = @@custom_annotation.new(1, 17, 'SYN', 'PRIMARY TREATMENT', @@cls_ont2, 0)
+    annotations_all = [a1, a2, a3]
+    annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
+    result_1 = @@coverage_evaluator.evaluate(input, annotations_all_hash, annotations_all_hash['ONT1'])
+    result_2 = @@coverage_evaluator.evaluate(input, annotations_all_hash, annotations_all_hash['ONT2'])
+    # We prefer one SYN annotation that covers two words than two PREF annotations
+    top_score = @@coverage_evaluator.send(:get_top_coverage_score, input, [a1, a2, a3])
+    assert(result_1.score <= top_score, "#{result_1.score} is not <= than #{top_score}")
+    assert(result_2.score <= top_score, "#{result_2.score} is not <= than #{top_score}")
   end
 
 end
