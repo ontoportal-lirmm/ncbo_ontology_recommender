@@ -23,7 +23,9 @@ module OntologyRecommender
     @settings.wc ||= 0.55
     @settings.pref_score ||= 10
     @settings.syn_score ||= 5
-    @settings.multiterm_score ||= 4
+    # According to the annotation score formula, this value ensures that an annotation 'a1' that covers two terms gets
+    # a better score than two independent annotations 'a2' and 'a3', even if a1 is SYN and a2 and a3 are PREF
+    @settings.multiterm_score ||= 6
     # Specialization evaluation
     @settings.ws ||= 0.15
     # Acceptance evaluation
@@ -39,7 +41,6 @@ module OntologyRecommender
     @settings.max_elements_set ||= 3
     @settings.max_results_single ||= 25
     @settings.max_results_sets ||= 25
-
   end
 
 end
