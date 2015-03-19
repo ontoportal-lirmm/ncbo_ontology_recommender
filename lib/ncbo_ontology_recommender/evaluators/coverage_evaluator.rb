@@ -11,6 +11,7 @@ module OntologyRecommender
       # - syn_score: score assigned to "SYN" annotations (done with a concept synonym)
       # - multiterm_score: score assigned to annotations done with multi-word terms (e.g. white blood cell)
       def initialize(pref_score, syn_score, multiterm_score)
+        @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
         @pref_score = pref_score
         @syn_score = syn_score
         @multiterm_score = multiterm_score
@@ -35,6 +36,14 @@ module OntologyRecommender
           @top_score = get_top_coverage_score(input, annotations_all)
           @input = input
           @annotations_all = annotations_all
+        end
+
+        # This condition should never be true, but it is here for safety to avoid coverage scores out of range, which
+        # could be caused by an incorrect computation of the top score due to overlapping annotations. Improving the
+        # algorithm to select the best annotations (select_best_annotations_for_input) would solve this potential issue.
+        if score > @top_score
+          @logger.warn("The coverage score for the ontology (#{score}) is greater than top_score (#{@top_score}). It has been set set equal to top_score.")
+          score = @top_score
         end
 
         # Score normalization
@@ -62,7 +71,17 @@ module OntologyRecommender
 
       # Selects the best annotations for the input. For each input substring (fragment),
       # it will select the annotation with the highest score.
-      # NOTE: the argument 'annotations' represents the annotations for a specific ontology
+      #
+      # IMPORTANT: this algorithm considers that one annotation that covers more than one word is better
+      # than several annotations that cover the words independently. Example:
+      # - Input: primary treatment
+      # - Annotations: 'primary' (PREF) (a1), 'treatment' (PREF) (a2), 'primary treatment' (SYN) (a3)
+      # The algorithm will consider that the best annotation for the input is 'primary treatment'. For the system to
+      # work well, this restriction must be reflected by the configuration parameters for coverage evaluation
+      # (i.e. pref_score, syn_score, multiterm_score), that is, the score for an annotation that covers several words
+      # must be always higher than several annotations covering independent words. Example:
+      # pref_score = 10; syn_score = 5; multiterm_score = 6
+      # score(a1) = 10; score(a2) = 10; score(a3) = (5 + 6) * 2 = 22, which is higher than 10 + 10.
       private
       def select_best_annotations_for_input(input, annotations)
         best_annotations = [ ]
@@ -76,7 +95,7 @@ module OntologyRecommender
             # Keeps only the best annotation. If there are several annotations with the same score, only one of them
             # (the first one) is kept.
             max_score = scores_hash.values.max
-            best_annotation = scores_hash.select{|ann, score| score == max_score}.keys[0]
+            best_annotation = scores_hash.select{|_, score| score == max_score}.keys[0]
             best_annotations << best_annotation
             from = best_annotation.to + 1
           else
