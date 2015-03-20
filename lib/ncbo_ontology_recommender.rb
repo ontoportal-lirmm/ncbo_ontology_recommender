@@ -83,7 +83,7 @@ module OntologyRecommender
       return ranking
     end
 
-    # Single ontology ranking. Each position contains an ontology.
+    # Single ontology ranking. Each position contains an ontology
     private
     def get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa, wd, max_results_single)
       @logger.info('Computing single ranking')
@@ -142,7 +142,7 @@ module OntologyRecommender
       return ranking[0..max_results_single-1]
     end
 
-    # Ontology sets ranking. Each position may contain one or several ontologies.
+    # Ontology sets ranking. Each position may contain one or several ontologies
     private
     def get_ranking_sets(ranking_single, input, wc, ws, max_elements_set, max_results_sets)
       @logger.info('Computing ranking sets')

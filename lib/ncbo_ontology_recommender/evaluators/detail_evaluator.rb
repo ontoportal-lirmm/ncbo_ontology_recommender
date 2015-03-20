@@ -4,7 +4,6 @@ require_relative 'detail_result'
 module OntologyRecommender
 
   module Evaluators
-
     ##
     # Detail of knowledge evaluator
     class DetailEvaluator

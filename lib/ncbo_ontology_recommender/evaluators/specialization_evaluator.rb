@@ -3,11 +3,12 @@ require_relative 'specialization_result'
 module OntologyRecommender
 
   module Evaluators
-
     ##
     # Ontology specialization evaluator
     class SpecializationEvaluator
+
       attr_reader :pref_score, :syn_score, :multiterm_score
+
       def initialize(pref_score, syn_score, multiterm_score)
         @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
         @pref_score = pref_score

@@ -3,7 +3,7 @@ module OntologyRecommender
   module Evaluators
 
     ##
-    #
+    # Detail of knowledge of an ontology for a given input
     class DetailResult
 
       attr_reader :normalizedScore, :definitionsScore, :synonymsScore, :propertiesScore

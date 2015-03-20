@@ -2,11 +2,12 @@ require_relative 'coverage_result'
 module OntologyRecommender
 
   module Evaluators
-
     ##
     # Ontology coverage evaluator
     class CoverageEvaluator
+
       attr_reader :pref_score, :syn_score, :multiterm_score, :best_annotations
+
       # - pref_score: score assigned to "PREF" annotations (done with a concept preferred name)
       # - syn_score: score assigned to "SYN" annotations (done with a concept synonym)
       # - multiterm_score: score assigned to annotations done with multi-word terms (e.g. white blood cell)
