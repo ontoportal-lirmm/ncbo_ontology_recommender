@@ -3,42 +3,46 @@ require_relative('text_position')
 
 module OntologyRecommender
 
-  module Utils
+  module Helpers
 
-    module AnnotatorUtils
+    module AnnotatorHelper
       # Obtain the annotations for an input (text or keywords).
       #   Input types: 1 (text), 2 (keywords).
       module_function
       def get_annotations(input, input_type, delimiter, ontologies)
+        if input.strip.size == 0 then return [] end
         logger =  @logger = Kernel.const_defined?('LOGGER') ? Kernel.const_get('LOGGER') : Logger.new(STDOUT)
         logger.info('Obtaining annotations from the Annotator')
         annotator = Annotator::Models::NcboAnnotator.new
         # Obtains the annotations done with all BioPortal ontologies. All these annotations will be used later, to
         # compute the maximum coverage score possible, which will be used to normalize the coverage score
+        time_annotator = Time.now
         annotations = annotator.annotate(input, {
                                                   ontologies: ontologies,
                                                   semantic_types: [],
                                                   filter_integers: false,
-                                                  expand_class_hierarchy: false,
-                                                  expand_hierarchy_levels: 0,
+                                                  expand_class_hierarchy: true,
+                                                  expand_hierarchy_levels: 5,
                                                   expand_with_mappings: false,
                                                   min_term_size: 0,
                                                   whole_word_only: true,
                                                   with_synonyms: true,
                                               })
+        @logger.info('TIME - Annotator call: ' + (Time.now-time_annotator).to_s + ' sec.')
         custom_annotations = [ ]
         annotations.each do |ann|
           ann.annotations.each do |a|
-            custom_annotation = CustomAnnotation.new(a[:from], a[:to], a[:matchType], a[:text], ann.annotatedClass)
+            custom_annotation = CustomAnnotation.new(a[:from], a[:to], a[:matchType], a[:text], ann.annotatedClass, ann.hierarchy.size)
             custom_annotations.push(custom_annotation)
           end
         end
-
+        @logger.info('Annotations obtained: ' + custom_annotations.size.to_s)
         # If the input type is 'keywords', only the annotations that represent whole keywords are kept.
         if input_type == 2
           custom_annotations = get_keyword_annotations(input, delimiter, custom_annotations)
+          @logger.info('Annotations kept: ' + custom_annotations.size.to_s)
         end
-        @logger.info('Annotations obtained: ' + annotations.size.to_s + '; Annotations selected: ' + custom_annotations.size.to_s)
+
         return custom_annotations
       end
 

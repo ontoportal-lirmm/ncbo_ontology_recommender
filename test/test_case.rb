@@ -28,13 +28,47 @@ require 'minitest/unit'
 MiniTest::Unit.autorun
 
 class RecommenderUnit < MiniTest::Unit
-
+  ANALYTICS_DATA = {
+      "BROTEST-0" => {
+          2013 => {
+              1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0
+          },
+          2014 => {
+              1 => 20, 2 => 30, 3 => 20, 4 => 10, 5 => 20, 6 => 15, 7 => 25, 8 => 20, 9 => 30, 10 => 15, 11 => 20, 12 => 35
+          },
+          2015 => {
+              1 => 10, 2 => 10, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0
+          }
+      },
+      "MCCLTEST-0" => {
+          2013 => {
+              1 => 2, 2 => 0, 3 => 10, 4 => 2, 5 => 2, 6 => 0, 7 => 6, 8 => 8, 9 => 0, 10 => 0, 11 => 1, 12 => 2
+          },
+          2014 => {
+              1 => 2, 2 => 0, 3 => 0, 4 => 2, 5 => 2, 6 => 0, 7 => 6, 8 => 8, 9 => 0, 10 => 0, 11 => 1, 12 => 2
+          },
+          2015 => {
+              1 => 5, 2 => 6, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0
+          }
+      },
+      "ONTOMATEST-0" => {
+          2013 => {
+              1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0
+          },
+          2014 => {
+              1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0
+          },
+          2015 => {
+              1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0
+          }
+      }
+  }
   def self.ontologies
     @@ontologies
   end
 
+  # Code to run before the very first test
   def before_suites
-    # code to run before the very first test
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
     @@sty = LinkedData::SampleData::Ontology.load_semantic_types_ontology
@@ -42,6 +76,8 @@ class RecommenderUnit < MiniTest::Unit
     annotator.init_redis_for_tests()
     annotator.create_term_cache_from_ontologies(@@ontologies, true)
     annotator.redis_switch_instance()
+    # Ontology analytics data
+    annotator.redis.set('ontology_analytics', Marshal.dump(ANALYTICS_DATA))
   end
 
   def after_suites

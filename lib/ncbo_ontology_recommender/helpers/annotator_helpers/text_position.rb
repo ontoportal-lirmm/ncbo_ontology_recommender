@@ -1,9 +1,9 @@
 
 module OntologyRecommender
 
-  module Utils
+  module Helpers
 
-    module AnnotatorUtils
+    module AnnotatorHelper
 
       ##
       # This class represents a substring position.

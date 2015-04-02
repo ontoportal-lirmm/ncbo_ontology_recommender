@@ -1,13 +1,11 @@
 module OntologyRecommender
 
   module Evaluators
-
     ##
     # Coverage provided by an ontology for a given input
     class CoverageResult
 
       include LinkedData::Hypermedia::Resource
-
       attr_reader :score, :normalizedScore, :numberTermsCovered, :numberWordsCovered, :annotations
 
       embed :annotations

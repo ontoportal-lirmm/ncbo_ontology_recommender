@@ -5,13 +5,12 @@ module OntologyRecommender
     # Acceptance of an ontology by the biomedical community
     class AcceptanceResult
 
-      attr_reader :score, :bioportal_score, :umls_score, :pubmed_score
+      attr_reader :normalizedScore, :bioportalScore, :umlsScore
 
-      def initialize(score, bioportal_score, umls_score, pubmed_score)
-        @score = score
+      def initialize(normalized_score, bioportal_score, umls_score)
+        @normalizedScore = normalized_score
         @bioportalScore = bioportal_score
         @umlsScore = umls_score
-        @pubmedScore = pubmed_score
       end
 
     end

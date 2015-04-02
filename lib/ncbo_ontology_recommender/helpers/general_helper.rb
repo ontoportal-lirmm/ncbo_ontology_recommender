@@ -1,16 +1,14 @@
 module OntologyRecommender
 
-  module Utils
+  module Helpers
 
     # Given the large number of ontologies in BioPortal, it is necessary to minimize the number of ontologies that
     # will be used to create the ontology sets that will be evaluated. Otherwise, the number of ontology sets will
-    # be too high and the system will be too slow.
+    # be too high and the evaluation will be too slow.
     #
     # The rules used to select the ontologies are:
     # - If the annotations done with an ontology O1 include the annotations done with another ontology, O2, then O2
     # can be ignored and it will not be taken into account to generate ontology combinations.
-    # - If one particular annotation is done with several different ontologies, then the ontology that has a better
-    # evaluation score (excluding the coverage criteria) will be selected and the other ones will be ignored.
     module_function
     def select_ontologies_for_ranking_sets(annotations, coverage_evaluator)
       annotations_hash = annotations.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
@@ -48,13 +46,9 @@ module OntologyRecommender
             if a2_score >= a1_score
               contained = true
               break
-            # elsif a2_score == a1_score
-            #   # TODO: complete when all the evaluators are implemented. It is necessary to give more priority to one
-            #   # ontology than to another. Currently an alphabetical comparison is done
-            #   if a1.ontologyAcronym > a2.ontologyAcronym
-            #     contained = true
-            #   end
-            #   break
+              # If two annotations provide exactly the same coverage the following "elsif" could be used to give more priority
+              # to one of them using other criteria (e.g. the acceptance of the ontology they belong to)
+              # elsif a2_score == a1_score
             end
           end
         end
@@ -79,7 +73,7 @@ module OntologyRecommender
     def normalize(x, xmin, xmax, ymin, ymax)
       xrange = xmax - xmin
       yrange = ymax - ymin
-      ymin + (x - xmin) * (yrange.to_f / xrange)
+      ymin + (x - xmin) * (yrange.to_f / xrange.to_f)
     end
 
     # Normalizes an array of values in the interval 0..X to the interval 0..1, such that the sum of all values is 1
@@ -106,6 +100,31 @@ module OntologyRecommender
       uri_parts = uri.split("/")
       return uri_parts[uri_parts.length-1]
     end
+
+    module_function
+    # For an array of BioPortal ontology acronyms returns only those that are included into UMLS
+    def get_umls_ontologies(ont_acronyms)
+      umls_acronyms = []
+      ont_acronyms.each do |acr|
+        ont = LinkedData::Models::Ontology.find(acr).include(group: LinkedData::Models::Group.goo_attrs_to_load())
+        if !ont.nil?
+          if ont.first.loaded_attributes.include? :group
+            if ont.first.group.map {|gr| gr.acronym}.include?('UMLS')
+              umls_acronyms << acr
+            end
+          end
+        end
+      end
+      return umls_acronyms
+    end
+
+    module_function
+    def get_ontology(ont_acronym)
+      ont = LinkedData::Models::Ontology.find(ont_acronym).first
+      ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
+      return ont
+    end
+
   end
 
 end

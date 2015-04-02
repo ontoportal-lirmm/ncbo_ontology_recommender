@@ -1,13 +1,11 @@
 module OntologyRecommender
 
   module Evaluators
-
     ##
     # Degree of specialization of an ontology for a given input
     class SpecializationResult
 
       include LinkedData::Hypermedia::Resource
-
       attr_reader :score
       attr_accessor :normalizedScore
 
