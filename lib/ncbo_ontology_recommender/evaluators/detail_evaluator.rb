@@ -137,7 +137,7 @@ module OntologyRecommender
         if (text.strip.empty?)
           query = '*'
         else
-          query = RSolr.escape(text)
+          query = solr_escape(text)
         end
         params["qf"] = "resource_id^100"
         acronyms = params["ontology_acronyms"] || restricted_ontologies_to_acronyms(params)
@@ -147,6 +147,12 @@ module OntologyRecommender
         return query
       end
 
+      # see https://github.com/rsolr/rsolr/issues/101
+      # and https://github.com/projecthydra/active_fedora/commit/75b4afb248ee61d9edb56911b2ef51f30f1ce17f
+      #
+      def solr_escape(text)
+        RSolr.solr_escape(text).gsub(/\s+/,"\\ ")
+      end
     end
 
   end
