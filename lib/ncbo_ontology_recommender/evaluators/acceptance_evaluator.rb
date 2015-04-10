@@ -20,6 +20,7 @@ module OntologyRecommender
       end
 
       def evaluate(acronyms, ont_acronym, current_year = Time.now.year, current_month = Time.now.month)
+        # if no analytics data found, then bp_score = 0
         bp_score = get_bp_score(ont_acronym, BP_VISITS_NUMBER_MONTHS, current_year, current_month)
         umls_score = get_umls_score(acronyms, ont_acronym)
         norm_score = @w_bp * bp_score + @w_umls * umls_score
@@ -27,6 +28,7 @@ module OntologyRecommender
       end
 
       private
+
       def get_umls_score(all_acronyms, ont_acronym)
         if @umls_ontologies == nil
           @umls_ontologies = OntologyRecommender::Helpers.get_umls_ontologies(all_acronyms)
@@ -38,7 +40,6 @@ module OntologyRecommender
         end
       end
 
-      private
       # - num_months: number of months used to calculate the score (e.g. months = 6 => last 6 months)
       def get_bp_score(ont_acronym, num_months, current_year, current_month)
         if @visits_hash == nil
@@ -62,10 +63,9 @@ module OntologyRecommender
       end
 
       # Return a hash |acronym, visits| for the last num_months. The result is ranked by visits
-      private
       def get_visits_for_period(num_months, current_year, current_month)
         # Visits for all BioPortal ontologies
-        bp_all_visits = get_visits([])
+        bp_all_visits = LinkedData::Models::Ontology.analytics
         periods = get_last_periods(num_months, current_year, current_month)
         period_visits = Hash.new
         bp_all_visits.each do |acronym, visits|
@@ -77,7 +77,6 @@ module OntologyRecommender
         return period_visits
       end
 
-      private
       # Obtains an array of [year, month] elements for the last num_months
       def get_last_periods(num_months, year, month)
         # Array of [year, month] elements
@@ -92,17 +91,6 @@ module OntologyRecommender
           periods << [year, month]
         end
         return periods
-      end
-
-      private
-      # If acronyms = [], all the analytics are returned
-      def get_visits(acronyms)
-        redis = Redis.new(host: Annotator.settings.annotator_redis_host, port: Annotator.settings.annotator_redis_port)
-        raw_analytics = redis.get('ontology_analytics')
-        raise Exception, 'Error loading ontology analytics data' if raw_analytics.nil?
-        analytics = Marshal.load(raw_analytics)
-        analytics.delete_if { |key, _| !acronyms.include? key } unless acronyms.empty?
-        return analytics
       end
 
     end
