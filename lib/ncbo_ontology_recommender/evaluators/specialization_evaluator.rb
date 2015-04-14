@@ -68,7 +68,10 @@ module OntologyRecommender
       end
 
       private
+
       def get_number_of_classes(ont_acronym)
+        cls_count = nil
+
         if @metrics_hash.nil?
           # Retrieve metrics for all ontologies
           metrics = get_metrics()
@@ -79,18 +82,15 @@ module OntologyRecommender
         else
           @logger.info("Ontology metrics not found (#{ont_acronym})")
           ont = LinkedData::Models::Ontology.find(ont_acronym)
-          if ont.nil?
-            cls_count = nil
-          else
-            # Retrieves submission
+
+          unless ont.nil?
             sub = ont.first.latest_submission
-            cls_count = LinkedData::Models::Class.where.in(sub).count
+            cls_count = LinkedData::Models::Class.where.in(sub).count unless sub.nil?
           end
         end
         return cls_count
       end
 
-      private
       def get_metrics(params = {})
         # check_last_modified_collection(LinkedData::Models::Metric)
         submissions = retrieve_latest_submissions(params)
@@ -118,7 +118,6 @@ module OntologyRecommender
         return submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
       end
 
-      private
       def retrieve_latest_submissions(options = {})
         status = (options[:status] || "RDF").to_s.upcase
         include_ready = status.eql?("READY") ? true : false
