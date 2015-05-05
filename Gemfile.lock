@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 62ef4905d961ba5fb12ad540c02ee1c7d3de2ffa
+  revision: ae4db9ca4c7da83b848f49497ea8bf8ec033ba99
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 70b65eab0d7f558037bfa89c75bfa3e2fcf18a9f
+  revision: 4d77b373c8ad515e85c31eb26e089acae5fb0e4c
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -81,7 +81,7 @@ GEM
     builder (3.2.2)
     coderay (1.1.0)
     cube-ruby (0.0.3)
-    domain_name (0.5.23)
+    domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.8)
       elasticsearch-api (= 1.0.7)
@@ -107,14 +107,14 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.4.3)
+    mime-types (2.5)
     minitest (4.7.5)
     multi_json (1.11.0)
     multipart-post (2.0.0)
     mysql2 (0.3.18)
     net-http-persistent (2.9.4)
     netrc (0.10.3)
-    oj (2.12.2)
+    oj (2.12.5)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -137,16 +137,16 @@ GEM
       builder (>= 2.1.2)
     ruby-xxHash (0.3.0)
     rubyzip (1.1.7)
-    sequel (4.21.0)
+    sequel (4.22.0)
     slop (3.6.0)
     systemu (2.6.5)
     thread_safe (0.3.5)
     typhoeus (0.7.1)
       ethon (>= 0.7.1)
-    tzinfo (0.3.43)
+    tzinfo (0.3.44)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.6)
+    unf_ext (0.0.7.1)
     uuid (2.3.7)
       macaddr (~> 1.0)
 
