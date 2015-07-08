@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 8bf9662b0ebf088723205a4f3cb4629ff1c2c1c4
+  revision: 5ffce826af3f11981676a80de86452ac88190b4e
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 460a04b310359f240b7d2328e86ad74f0b8a3447
+  revision: d9ac30c4fee7022bf48c5cd235cf7816af8c9592
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 8a7206667e9b8139b295390c97bff69818492e8b
+  revision: 52f31bfb861a5ebbd9717ebedfd4f340c1bf819f
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -91,11 +91,11 @@ GEM
     elasticsearch-transport (1.0.12)
       faraday
       multi_json
-    ethon (0.7.3)
+    ethon (0.7.4)
       ffi (>= 1.3.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.8)
+    ffi (1.9.10)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
@@ -109,7 +109,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.6.1)
     minitest (4.7.5)
-    multi_json (1.11.0)
+    multi_json (1.11.2)
     multipart-post (2.0.0)
     mysql2 (0.3.18)
     net-http-persistent (2.9.4)
@@ -121,7 +121,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.1)
+    rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (10.4.2)
@@ -137,17 +137,17 @@ GEM
       builder (>= 2.1.2)
     ruby-xxHash (0.3.0)
     rubyzip (1.1.7)
-    sequel (4.23.0)
+    sequel (4.24.0)
     slop (3.6.0)
     systemu (2.6.5)
     thread_safe (0.3.5)
-    typhoeus (0.7.1)
-      ethon (>= 0.7.1)
+    typhoeus (0.7.2)
+      ethon (>= 0.7.4)
     tzinfo (0.3.44)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
-    uuid (2.3.7)
+    uuid (2.3.8)
       macaddr (~> 1.0)
 
 PLATFORMS
