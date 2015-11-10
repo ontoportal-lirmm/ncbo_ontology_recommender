@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: cd22303b969179aba59e15ddc571e666ce65a242
+  revision: 4104b5ff95f945e59c4eea58bd5ff408cb1ef83f
   branch: master
   specs:
     ncbo_annotator (0.0.1)
