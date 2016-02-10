@@ -71,7 +71,7 @@ module OntologyRecommender
         bp_all_visits.each do |acronym, visits|
           period_visits[acronym] = 0
           periods.each do |p|
-            period_visits[acronym] += visits[p[0]][p[1]]
+            period_visits[acronym] += visits[p[0]] ? visits[p[0]][p[1]] || 0 : 0
           end
         end
         return period_visits
