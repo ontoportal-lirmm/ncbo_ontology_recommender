@@ -85,7 +85,11 @@ module OntologyRecommender
 
           unless ont.nil?
             sub = ont.first.latest_submission
-            cls_count = LinkedData::Models::Class.where.in(sub).count unless sub.nil?
+            
+            # HACK: Addresses poor site performance/outages due to long running 4store 
+            #    queries that calculate total class counts.  See NCBO-1648.
+            # cls_count = LinkedData::Models::Class.where.in(sub).count unless sub.nil?
+            cls_count = 1000 # some random number
           end
         end
         return cls_count
