@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: e02c09aa8624cfc771993bbd3fe76a282cd93554
+  revision: e83f69e9a3b87eb990ec9343136e790b6bf2cf49
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: aabc4031d0eb7aef0bbe3321b9648a58841ebd59
+  revision: 9583b0898f160aa83575cef02539a91a76e2b381
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2296faa432e62918437c8b943122e0ec87e7d961
+  revision: 143e27cf051ba12524066bf16bc576bada2a343e
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -80,7 +80,7 @@ GEM
     addressable (2.3.5)
     bcrypt (3.1.10)
     builder (3.2.2)
-    coderay (1.1.0)
+    coderay (1.1.1)
     cube-ruby (0.0.3)
     domain_name (0.5.20160128)
       unf (>= 0.0.5, < 1.0.0)
@@ -108,14 +108,14 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.99)
+    mime-types (2.99.1)
     minitest (4.7.5)
     multi_json (1.11.2)
     multipart-post (2.0.0)
     mysql2 (0.4.2)
     net-http-persistent (2.9.4)
     netrc (0.11.0)
-    oj (2.14.4)
+    oj (2.14.5)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.3)
@@ -134,10 +134,10 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rsolr (1.0.13)
+    rsolr (1.1.1)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.1.7)
+    rubyzip (1.2.0)
     sequel (4.31.0)
     slop (3.6.0)
     systemu (2.6.5)
