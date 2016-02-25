@@ -35,7 +35,7 @@ module OntologyRecommender
             num_classes = get_number_of_classes(ont_acronym)
             if num_classes.nil?
               spec_score = 0
-              @logger.info("Ontology not found (#{ont_acronym}). Specialization score set to 0")
+              @logger.info("Number of classes is not found for #{ont_acronym}. Specialization score set to 0.")
             else
               # Normalization by ontology size
               spec_score = (spec_score / Math.log10(num_classes)).round(3)
@@ -77,22 +77,10 @@ module OntologyRecommender
           metrics = get_metrics()
           @metrics_hash = metrics.group_by{|m| m.submission.first.ontology.acronym}
         end
-        if @metrics_hash[ont_acronym] != nil
-          cls_count = @metrics_hash[ont_acronym].first.classes
-        else
-          @logger.info("Ontology metrics not found (#{ont_acronym})")
-          ont = LinkedData::Models::Ontology.find(ont_acronym)
+        cls_count = @metrics_hash[ont_acronym].first.classes if @metrics_hash[ont_acronym]
 
-          unless ont.nil?
-            sub = ont.first.latest_submission
-            
-            # HACK: Addresses poor site performance/outages due to long running 4store 
-            #    queries that calculate total class counts.  See NCBO-1648.
-            # cls_count = LinkedData::Models::Class.where.in(sub).count unless sub.nil?
-            cls_count = 1000 # some random number
-          end
-        end
-        return cls_count
+        # if cls_count is not found, a nil is returned
+        cls_count
       end
 
       def get_metrics(params = {})
