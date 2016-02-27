@@ -33,9 +33,9 @@ module OntologyRecommender
             end
             # Number of classes in the ontology
             num_classes = get_number_of_classes(ont_acronym)
-            if num_classes.nil?
+            if num_classes.nil? || num_classes == 0
               spec_score = 0
-              @logger.info("Number of classes is not found for #{ont_acronym}. Specialization score set to 0.")
+              @logger.info("Number of classes for #{ont_acronym} is #{num_classes}. Specialization score set to 0.")
             else
               # Normalization by ontology size
               spec_score = (spec_score / Math.log10(num_classes)).round(3)
@@ -77,7 +77,7 @@ module OntologyRecommender
           metrics = get_metrics()
           @metrics_hash = metrics.group_by{|m| m.submission.first.ontology.acronym}
         end
-        cls_count = @metrics_hash[ont_acronym].first.classes if @metrics_hash[ont_acronym]
+        cls_count = @metrics_hash[ont_acronym].first.classes unless @metrics_hash[ont_acronym].nil? || @metrics_hash[ont_acronym].empty?
 
         # if cls_count is not found, a nil is returned
         cls_count

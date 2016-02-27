@@ -124,11 +124,18 @@ module OntologyRecommender
         detail_result = @detail_evaluator.evaluate(@annotations_all_hash, best_annotations_ont)
         time_detail += Time.now - time_detail_ont
 
+        coverage_score = Scores::Score.new(coverage_result.normalizedScore, wc)
+        specialization_score = Scores::Score.new(specialization_result.normalizedScore, ws)
+        acceptance_score = Scores::Score.new(acceptance_result.normalizedScore, wa)
+        detail_score = Scores::Score.new(detail_result.normalizedScore, wd)
+
+        @logger.info("Coverage score: #{coverage_score}")
+        @logger.info("Specialization score: #{specialization_score}")
+        @logger.info("Acceptance score: #{acceptance_score}")
+        @logger.info("Detail score: #{detail_score}")
+
         aggregated_score = Scores::ScoreAggregator.
-            get_aggregated_scores([Scores::Score.new(coverage_result.normalizedScore, wc),
-                                   Scores::Score.new(specialization_result.normalizedScore, ws),
-                                   Scores::Score.new(acceptance_result.normalizedScore, wa),
-                                   Scores::Score.new(detail_result.normalizedScore, wd)]).round(3)
+            get_aggregated_scores([coverage_score, specialization_score, acceptance_score, detail_score]).round(3)
         ont = annotations_hash[ont_acronym].first.annotatedClass.submission.ontology
         ranking << Recommendation.new(aggregated_score, [ont], coverage_result, specialization_result, acceptance_result, detail_result)
       end
@@ -137,6 +144,7 @@ module OntologyRecommender
       @logger.info('TIME - Acceptance evaluation: ' + time_acceptance.round(3).to_s + ' sec.')
       @logger.info('TIME - Detail evaluation: ' + time_detail.round(3).to_s + ' sec.')
       @logger.info('TIME - Retrieve ontologies: ' + time_retrieve_onts.round(3).to_s + ' sec.')
+
       ranking = ranking.sort_by {|element| element.evaluationScore.to_f}.reverse
 
       return ranking[0..max_results_single-1]
