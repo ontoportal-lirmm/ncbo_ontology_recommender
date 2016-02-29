@@ -129,10 +129,10 @@ module OntologyRecommender
         acceptance_score = Scores::Score.new(acceptance_result.normalizedScore, wa)
         detail_score = Scores::Score.new(detail_result.normalizedScore, wd)
 
-        @logger.info("Coverage score: #{coverage_score}")
-        @logger.info("Specialization score: #{specialization_score}")
-        @logger.info("Acceptance score: #{acceptance_score}")
-        @logger.info("Detail score: #{detail_score}")
+        @logger.info("Coverage score: #{coverage_score.score}")
+        @logger.info("Specialization score: #{specialization_score.score}")
+        @logger.info("Acceptance score: #{acceptance_score.score}")
+        @logger.info("Detail score: #{detail_score.score}")
 
         aggregated_score = Scores::ScoreAggregator.
             get_aggregated_scores([coverage_score, specialization_score, acceptance_score, detail_score]).round(3)
