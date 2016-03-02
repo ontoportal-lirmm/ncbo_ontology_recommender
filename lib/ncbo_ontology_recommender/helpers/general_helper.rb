@@ -73,6 +73,7 @@ module OntologyRecommender
     def normalize(x, xmin, xmax, ymin, ymax)
       xrange = xmax - xmin
       yrange = ymax - ymin
+      return ymin if xrange == 0
       ymin + (x - xmin) * (yrange.to_f / xrange.to_f)
     end
 
