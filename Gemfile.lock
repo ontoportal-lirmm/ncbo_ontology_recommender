@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f401f45ddf43fb0f374c6313ffb5820c3351e375
+  revision: 03e34d3707ed3e279fc76031c821f3461ac8ad67
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: e3e5c79ab4919312fb75f7909744227af1ab380b
+  revision: 3ba8a3766d94c6154b58d937bd939dfe34f38545
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: d43bd6a6c8b014ebd69eabeda843740b66560ebb
+  revision: 268ed68098c5256e9d2cd5888e7d9156ea39aa54
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -78,11 +78,11 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     addressable (2.3.5)
-    bcrypt (3.1.10)
+    bcrypt (3.1.11)
     builder (3.2.2)
     coderay (1.1.1)
     cube-ruby (0.0.3)
-    domain_name (0.5.20160216)
+    domain_name (0.5.20160309)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.15)
       elasticsearch-api (= 1.0.15)
