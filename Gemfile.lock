@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ad1efce9ac539b00dc26dc738c04828e9821d48e
-  branch: master
+  revision: 03e34d3707ed3e279fc76031c821f3461ac8ad67
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c9387cb5a1dc82d768a00f40f1a089c7415fe21f
-  branch: master
+  revision: 3ba8a3766d94c6154b58d937bd939dfe34f38545
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 5ab2d63cd2d54f447507b00317924adf97fd76bb
+  revision: 268ed68098c5256e9d2cd5888e7d9156ea39aa54
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
