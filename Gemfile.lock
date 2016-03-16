@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: ba85ef7d83788be89d4850e95db2a8068f0b2311
+  revision: d26a2965396542cea2d832d7c70bd0b20d6be473
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 03e34d3707ed3e279fc76031c821f3461ac8ad67
+  revision: be3d304a732debc1d60904d2650886f366b112a8
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 3ba8a3766d94c6154b58d937bd939dfe34f38545
+  revision: 44c1702aeb7cc20878828734a538b9f9520c77a7
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 268ed68098c5256e9d2cd5888e7d9156ea39aa54
+  revision: 2f69bdf6ee1e91aa974fe844b5097e465a2fe596
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: ead7d226ff679969cbbb789c33d5660b45d5a521
+  revision: 41dab44973c3f086bf335c2513cc208144e99a74
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -144,7 +144,7 @@ GEM
     thread_safe (0.3.5)
     typhoeus (1.0.1)
       ethon (>= 0.8.0)
-    tzinfo (0.3.46)
+    tzinfo (0.3.47)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
