@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: be3d304a732debc1d60904d2650886f366b112a8
+  revision: c30db1784cd1c1116ca896c7cb733c1be1225042
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 44c1702aeb7cc20878828734a538b9f9520c77a7
+  revision: 16889536dfd73807db6703821e0afa9ff516a033
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,7 +82,7 @@ GEM
     builder (3.2.2)
     coderay (1.1.1)
     cube-ruby (0.0.3)
-    domain_name (0.5.20160309)
+    domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.15)
       elasticsearch-api (= 1.0.15)
