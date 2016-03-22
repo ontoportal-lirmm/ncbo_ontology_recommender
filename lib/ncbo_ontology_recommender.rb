@@ -74,7 +74,7 @@ module OntologyRecommender
 
       if output_type == 2
         time_sets = Time.now
-        ranking = get_ranking_sets(ranking, input, wc, ws, max_elements_set, max_results_sets)
+        ranking = get_ranking_sets(ranking, input, wc, ws, wa, wd, max_elements_set, max_results_sets)
         @logger.info('TIME - Obtain sets ranking: ' + (Time.now-time_sets).to_s + ' sec.')
       end
 
@@ -146,7 +146,7 @@ module OntologyRecommender
 
     # Ontology sets ranking. Each position may contain one or several ontologies
     private
-    def get_ranking_sets(ranking_single, input, wc, ws, max_elements_set, max_results_sets)
+    def get_ranking_sets(ranking_single, input, wc, ws, wa, wd, max_elements_set, max_results_sets)
       @logger.info('Computing ranking sets')
       # Stores the results in a hash |ontology_acronym,result| to access them easily
       single_results_hash = {}
@@ -249,10 +249,13 @@ module OntologyRecommender
           detail_result_set = OntologyRecommender::Evaluators::DetailResult.new(detail_score_set, defs_score_set,
                                                                                 syns_score_set, props_score_set)
 
+          coverage_score_set_weighted = Scores::Score.new(coverage_result_set.normalizedScore, wc)
+          specialization_score_set_weighted = Scores::Score.new(specialization_result_set.normalizedScore, ws)
+          acceptance_score_set_weighted = Scores::Score.new(acceptance_result_set.normalizedScore, wa)
+          detail_score_set_weighted = Scores::Score.new(detail_result_set.normalizedScore, wd)
           aggregated_score_set = Scores::ScoreAggregator.
-              get_aggregated_scores([Scores::Score.new(coverage_result_set.normalizedScore, wc),
-                                     Scores::Score.new(specialization_result_set.normalizedScore, ws),
-                                     Scores::Score.new(detail_result_set.normalizedScore, ws)])
+              get_aggregated_scores([coverage_score_set_weighted, specialization_score_set_weighted,
+                                     acceptance_score_set_weighted, detail_score_set_weighted]).round(3)
 
           onts = set.map { |acronym| annotations_hash[acronym].first.annotatedClass.submission.ontology }
 
