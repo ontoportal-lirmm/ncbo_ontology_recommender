@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 8302b4f7c2dad07bbf0f3411110fb0d7c605022a
+  revision: ef65f115a5c8dd8a91a7de0819b80ddc66fd59ce
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f3bef895f3e3851823f071637fd959c27058a3d4
+  revision: d7eb0936fbc393efeb6017def9b71db0d8a7c095
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -144,7 +144,7 @@ GEM
     thread_safe (0.3.5)
     typhoeus (1.0.1)
       ethon (>= 0.8.0)
-    tzinfo (0.3.47)
+    tzinfo (0.3.48)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
