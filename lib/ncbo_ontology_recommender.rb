@@ -65,7 +65,7 @@ module OntologyRecommender
       # Evaluators initialization
       @coverage_evaluator = Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
       @specialization_evaluator = Evaluators::SpecializationEvaluator.new(pref_score, syn_score, multiterm_score)
-      @acceptance_evaluator = Evaluators::AcceptanceEvaluator.new(w_bp, w_umls)
+      @acceptance_evaluator = Evaluators::AcceptanceEvaluator.new(w_bp, w_umls, ontologies)
       @detail_evaluator = Evaluators::DetailEvaluator.new(top_defs, top_syns, top_props)
 
       time_single = Time.now
@@ -117,7 +117,7 @@ module OntologyRecommender
         time_specialization += Time.now - time_specialization_ont
         # Acceptance evaluation
         time_acceptance_ont = Time.now
-        acceptance_result = @acceptance_evaluator.evaluate(annotations_hash.keys, ont_acronym)
+        acceptance_result = @acceptance_evaluator.evaluate(ont_acronym)
         time_acceptance += Time.now - time_acceptance_ont
         # Detail of knowledge evaluation
         time_detail_ont = Time.now
