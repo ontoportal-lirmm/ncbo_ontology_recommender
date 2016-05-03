@@ -63,6 +63,13 @@ class RecommenderUnit < MiniTest::Unit
           }
       }
   }
+
+  ONTOLOGY_RANK_DATA = {
+      "BROTEST-0" => {bioportalScore: 0.96, umlsScore: 1.0},
+      "MCCLTEST-0" => {bioportalScore: 0.648, umlsScore: 0.0},
+      "ONTOMATEST-0" => {bioportalScore: 0.443, umlsScore: 1.0}
+  }
+
   def self.ontologies
     @@ontologies
   end
@@ -78,6 +85,7 @@ class RecommenderUnit < MiniTest::Unit
     annotator.redis_switch_instance()
     # Ontology analytics data
     annotator.redis.set('ontology_analytics', Marshal.dump(ANALYTICS_DATA))
+    annotator.redis.set('ontology_rank', Marshal.dump(ONTOLOGY_RANK_DATA))
   end
 
   def after_suites

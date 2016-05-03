@@ -103,23 +103,6 @@ module OntologyRecommender
     end
 
     module_function
-    # For an array of BioPortal ontology acronyms returns only those that are included into UMLS
-    def get_umls_ontologies(ont_acronyms)
-      umls_acronyms = []
-      ont_acronyms.each do |acr|
-        ont = LinkedData::Models::Ontology.find(acr).include(group: LinkedData::Models::Group.goo_attrs_to_load())
-        if !ont.nil?
-          if ont.first.loaded_attributes.include? :group
-            if ont.first.group.map {|gr| gr.acronym}.include?('UMLS')
-              umls_acronyms << acr
-            end
-          end
-        end
-      end
-      return umls_acronyms
-    end
-
-    module_function
     def get_ontology(ont_acronym)
       ont = LinkedData::Models::Ontology.find(ont_acronym).first
       ont.bring(*LinkedData::Models::Ontology.goo_attrs_to_load([:acronym, :name]))
