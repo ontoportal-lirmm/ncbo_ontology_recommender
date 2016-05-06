@@ -69,20 +69,44 @@ module OntologyRecommender
       end
 
       def get_number_of_classes(ont_acronym)
-        if @metrics_hash.nil?
-          @metrics_hash = {}
-          subs = retrieve_latest_submissions
+        cls_count = nil
 
-          subs.each do |acronym, sub|
-            cls_count = sub.class_count(@logger)
-            @metrics_hash[acronym] = cls_count
+        if @metrics_hash.nil?
+          # Retrieve metrics for all ontologies
+          metrics = get_metrics()
+          @metrics_hash = metrics.group_by{|m| m.submission.first.ontology.acronym}
+        end
+        cls_count = @metrics_hash[ont_acronym].first.classes unless @metrics_hash[ont_acronym].nil? || @metrics_hash[ont_acronym].empty?
+
+        # if cls_count is not found, a nil is returned
+        cls_count
+      end
+
+      def get_metrics(params = {})
+        # check_last_modified_collection(LinkedData::Models::Metric)
+        submissions = retrieve_latest_submissions(params)
+        submissions = submissions.values
+        # metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
+        metrics_include = LinkedData::Models::Metric.goo_attrs_to_load()
+        LinkedData::Models::OntologySubmission.where.models(submissions)
+            .include(metrics: metrics_include).all
+        #just a fallback for metrics that are not really built.
+        to_remove = []
+        submissions.each do |x|
+          if x.metrics
+            begin
+              x.metrics.submission
+            rescue
+              LOGGER.error("submission with inconsistent metrics #{x.id.to_s}")
+              to_remove << x
+            end
           end
         end
-
-        cls_count = @metrics_hash[ont_acronym]
-        # if cls_count is not found, nil is returned
-        cls_count = nil if cls_count && cls_count < 0
-        cls_count
+        to_remove.each do |x|
+          submissions.delete x
+        end
+        #end fallback
+        return submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
       end
 
       def retrieve_latest_submissions(options={})
@@ -96,6 +120,7 @@ module OntologyRecommender
         latest_submissions = {}
 
         submissions.each do |sub|
+          next unless sub.ready?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId > latest_submissions[sub.ontology.acronym].submissionId
         end
