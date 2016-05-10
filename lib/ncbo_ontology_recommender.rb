@@ -24,7 +24,7 @@ module OntologyRecommender
 
     # input_type: 1 (text), 2 (keywords)
     # output_type: 1 (single ontologies), 2 (ontology sets)
-    def recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)
+    def recommend(input, input_type, output_type, max_elements_set, acronyms, wc, ws, wa, wd)
       # Parameters validation
       if input.nil? || input.empty? then raise ArgumentError, 'Invalid input' end
       if input_type == nil || (input_type != 1 && input_type !=2) then raise ArgumentError, 'Invalid value for input_type' end
@@ -35,12 +35,14 @@ module OntologyRecommender
       if wa.nil? || wa < 0 then raise ArgumentError, 'Invalid value for wa' end
       if wd.nil? || wd < 0 then raise ArgumentError, 'Invalid value for wd' end
       if wc + ws + wa + wd == 0 then raise ArgumentError, 'The sum of all weights must be greater than zero' end
+
       @logger.info('Starting ontology recommendation')
       @logger.info('Input: ' + input)
       @logger.info('Input type: ' + input_type.to_s + '; Output type: ' + output_type.to_s + '; Max ontologies/set: ' + max_elements_set.to_s)
-      @logger.info('Number of ontologies: ' + ontologies.size.to_s)
+      @logger.info('Number of ontologies: ' + acronyms.size.to_s)
       @logger.info('Weights: wc: ' + wc.to_s + '; ws: ' + ws.to_s + '; wa: ' + wa.to_s + '; wd: ' + wd.to_s)
       start_time = Time.now
+
       # Weights normalization (if necessary)
       if (wc + ws + wa + wd != 1)
         wc, ws, wa, wd  = Helpers.normalize_weights([wc, ws, wa, wd])
@@ -48,28 +50,33 @@ module OntologyRecommender
       end
       # Keywords delimiter char
       delimiter = @settings.delimiter
+
       # Coverage evaluation
       pref_score = @settings.pref_score
       syn_score = @settings.syn_score
       multiterm_score = @settings.multiterm_score
+
       # Acceptance evaluation
       w_bp = @settings.w_bp
       w_umls = @settings.w_umls
+
       # Detail evaluation
       top_defs = @settings.top_defs
       top_syns = @settings.top_syns
       top_props = @settings.top_props
+
       # Other parameters
       max_results_single = @settings.max_results_single
       max_results_sets = @settings.max_results_sets
+
       # Evaluators initialization
       @coverage_evaluator = Evaluators::CoverageEvaluator.new(pref_score, syn_score, multiterm_score)
       @specialization_evaluator = Evaluators::SpecializationEvaluator.new(pref_score, syn_score, multiterm_score)
-      @acceptance_evaluator = Evaluators::AcceptanceEvaluator.new(w_bp, w_umls, ontologies)
+      @acceptance_evaluator = Evaluators::AcceptanceEvaluator.new(w_bp, w_umls, acronyms)
       @detail_evaluator = Evaluators::DetailEvaluator.new(top_defs, top_syns, top_props)
 
       time_single = Time.now
-      ranking = get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa, wd, max_results_single)
+      ranking = get_ranking_single(input, input_type, delimiter, acronyms, wc, ws, wa, wd, max_results_single)
       @logger.info('TIME - Obtain single ranking: ' + (Time.now-time_single).to_s + ' sec.')
 
       if output_type == 2
@@ -80,12 +87,12 @@ module OntologyRecommender
 
       @logger.info('Recommendation finished. Ranking size: ' + ranking.size.to_s +
                        '; Execution time: ' + (Time.now-start_time).to_s + ' sec.')
-      return ranking
+      ranking
     end
 
     # Single ontology ranking. Each position contains an ontology
     private
-    def get_ranking_single(input, input_type, delimiter, ontologies, wc, ws, wa, wd, max_results_single)
+    def get_ranking_single(input, input_type, delimiter, acronyms, wc, ws, wa, wd, max_results_single)
       @logger.info('Computing single ranking')
       # Obtain all annotations for the input (annotations done with all BioPortal ontologies)
       time_annotations = Time.now
@@ -95,9 +102,7 @@ module OntologyRecommender
       @annotations_all_hash = annotations_all.group_by{|ann| ann.annotatedClass.submission.ontology.acronym}
       # Annotations for the picked ontologies
       annotations_hash = @annotations_all_hash.dup
-      if (!ontologies.empty?)
-        annotations_hash.delete_if {|acr, _| (!ontologies.include? acr)}
-      end
+      annotations_hash.delete_if {|acr, _| (!acronyms.include? acr)} unless acronyms.empty?
       @logger.info('Ontologies that provide annotations: ' + annotations_hash.keys.size.to_s)
       ranking = []
       time_coverage = 0
@@ -105,6 +110,7 @@ module OntologyRecommender
       time_acceptance = 0
       time_detail = 0
       time_retrieve_onts = 0
+
       annotations_hash.keys.each do |ont_acronym|
         # Coverage evaluation
         time_coverage_ont = Time.now
@@ -133,6 +139,7 @@ module OntologyRecommender
         ont = annotations_hash[ont_acronym].first.annotatedClass.submission.ontology
         ranking << Recommendation.new(aggregated_score, [ont], coverage_result, specialization_result, acceptance_result, detail_result)
       end
+
       @logger.info('TIME - Coverage evaluation: ' + time_coverage.round(3).to_s + ' sec.')
       @logger.info('TIME - Specialization evaluation: ' + time_specialization.round(3).to_s + ' sec.')
       @logger.info('TIME - Acceptance evaluation: ' + time_acceptance.round(3).to_s + ' sec.')
@@ -140,12 +147,12 @@ module OntologyRecommender
       @logger.info('TIME - Retrieve ontologies: ' + time_retrieve_onts.round(3).to_s + ' sec.')
 
       ranking = ranking.sort_by {|element| element.evaluationScore.to_f}.reverse
-
-      return ranking[0..max_results_single-1]
+      ranking[0..max_results_single-1]
     end
 
     # Ontology sets ranking. Each position may contain one or several ontologies
     private
+
     def get_ranking_sets(ranking_single, input, wc, ws, wa, wd, max_elements_set, max_results_sets)
       @logger.info('Computing ranking sets')
       # Stores the results in a hash |ontology_acronym,result| to access them easily
@@ -169,20 +176,25 @@ module OntologyRecommender
       # coverage provided by the first ontology in the single ranking, the combination is directly discarded because
       # the combination will not improve the results of the single ranking
       c2 = [ ]
+
       onts_combinations.each do |combination|
         max_coverage = 0
+
         combination.each do |acronym|
           max_coverage += single_results_hash[acronym].coverageResult.normalizedScore
         end
+
         if max_coverage > ranking_single[0].coverageResult.normalizedScore
           c2 << combination
         end
       end
+
       onts_combinations = c2
       @logger.info('Selected combinations (performance improvement 2): ' + onts_combinations.size.to_s)
       count_combinations = 0
       # Evaluation of ontology sets
-      ranking = [ ]
+      ranking = []
+
       onts_combinations.each do |set|
         # Coverage evaluation for ontology sets. It is computed for all the annotations together.
         annotations_set = [ ]
@@ -195,6 +207,7 @@ module OntologyRecommender
         # to those sets whose ontologies (all of them) provide at least one annotation
         # Hash |acronym, annotations|
         annotations_hash = coverage_result_set.annotations.group_by{ |a| a.annotatedClass.submission.ontology.acronym}
+
         if set.size == annotations_hash.keys.size
           count_combinations += 1
           # Calculates the contribution done by each ontology to the coverage score. This contribution (or partial score)
@@ -270,7 +283,7 @@ module OntologyRecommender
       # end
       # Sort by two criteria: (1) Evaluation score, (2) Set size
       ranking = ranking.sort_by {|element| [-element.evaluationScore.to_f, element.ontologies.size]}
-      return ranking[0..max_results_sets-1]
+      ranking[0..max_results_sets-1]
     end
 
   end
