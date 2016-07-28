@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: b7f30deaf230a535483032612436d2ee06ad512a
+  revision: d2033f801830e2e6a98f9bd1030e4025e890c594
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: fc1336a765c5d2554176cf6744badaade3393537
+  revision: 87ca70a3c1918f50bf592126f9b78778f22fb2d5
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 94b5b3ea25cc49a9f6e1044f8fdae02f2a07593c
+  revision: 276303e75f41e5adf5c2faa207ecd95d9e279710
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -84,12 +84,12 @@ GEM
     cube-ruby (0.0.3)
     domain_name (0.5.20160615)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.18)
-      elasticsearch-api (= 1.0.18)
-      elasticsearch-transport (= 1.0.18)
-    elasticsearch-api (1.0.18)
+    elasticsearch (2.0.0)
+      elasticsearch-api (= 2.0.0)
+      elasticsearch-transport (= 2.0.0)
+    elasticsearch-api (2.0.0)
       multi_json
-    elasticsearch-transport (1.0.18)
+    elasticsearch-transport (2.0.0)
       faraday
       multi_json
     ethon (0.9.0)
@@ -100,8 +100,8 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    json (2.0.1)
-    json_pure (2.0.1)
+    json (2.0.2)
+    json_pure (2.0.2)
     libxml-ruby (2.9.0)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
@@ -130,7 +130,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    redis (3.3.0)
+    redis (3.3.1)
     ref (2.0.0)
     rest-client (2.0.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -146,7 +146,7 @@ GEM
     test-unit-minitest (0.9.1)
       minitest (~> 4.7)
     thread_safe (0.3.5)
-    typhoeus (1.0.2)
+    typhoeus (1.1.0)
       ethon (>= 0.9.0)
     tzinfo (0.3.51)
     unf (0.1.4)
