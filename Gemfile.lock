@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 5d4401d7e31ed6c60e681babe863cddfbb2149bf
+  revision: b7f30deaf230a535483032612436d2ee06ad512a
   branch: staging
   specs:
     goo (0.0.2)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 61c841729423f73eb086d3ae320a70dc3e60f060
+  revision: 94b5b3ea25cc49a9f6e1044f8fdae02f2a07593c
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -143,6 +143,8 @@ GEM
     sequel (4.36.0)
     slop (3.6.0)
     systemu (2.6.5)
+    test-unit-minitest (0.9.1)
+      minitest (~> 4.7)
     thread_safe (0.3.5)
     typhoeus (1.0.2)
       ethon (>= 0.9.0)
@@ -167,6 +169,7 @@ DEPENDENCIES
   rake (~> 10.0)
   redis (~> 3.0)
   sparql-client!
+  test-unit-minitest
 
 BUNDLED WITH
    1.12.5
