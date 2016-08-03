@@ -8,6 +8,11 @@ gem 'cube-ruby', require: "cube"
 # Development
 gem 'pry', group: :development
 
+# Test
+group :test do
+  gem 'test-unit-minitest'
+end
+
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', github: 'ncbo/goo', branch: 'staging'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'staging'
