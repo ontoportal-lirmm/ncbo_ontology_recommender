@@ -33,7 +33,10 @@ module OntologyRecommender
               @logger.info("Number of classes for #{acr} is #{num_classes}. Specialization score set to 0.")
             else
               # For ALL the annotations done with the ontology...
-              anns.each { |ann| spec_score += get_annotation_score(ann) + (2 * ann.hierarchySize) }
+              # anns.each { |ann| spec_score += get_annotation_score(ann) + (2 * ann.hierarchySize) }
+              # removing hierarchySize from the calculation for now. There is a bug that returns hierarchySize as 0 for some annotations
+              # Ex: neocortex in MA ontology
+              anns.each { |ann| spec_score += get_annotation_score(ann) }
               # Normalization by ontology size
               spec_score = (spec_score / Math.log10(num_classes)).round(3)
             end
