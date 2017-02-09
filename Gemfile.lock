@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: dcb8b02e9e147a37d8cb876b0107c568edcefb2e
+  revision: 4bbfecd8277dd9517f3977d7f1b1d206eeb8ed3d
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -84,12 +84,12 @@ GEM
     cube-ruby (0.0.3)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (5.0.1)
-      elasticsearch-api (= 5.0.1)
-      elasticsearch-transport (= 5.0.1)
-    elasticsearch-api (5.0.1)
+    elasticsearch (5.0.3)
+      elasticsearch-api (= 5.0.3)
+      elasticsearch-transport (= 5.0.3)
+    elasticsearch-api (5.0.3)
       multi_json
-    elasticsearch-transport (5.0.1)
+    elasticsearch-transport (5.0.3)
       faraday
       multi_json
     ethon (0.10.1)
