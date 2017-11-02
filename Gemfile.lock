@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 635972d07fafda13c1c4d5751429c0303fff70e7
+  revision: 054ea37df26c0952a216e3ae725e9f10b55c316a
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 356df908cd2f1291efb14b56c83253d799beb5af
+  revision: dac5f70a7885db6862090b5d384fc84aea4bd9d0
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c6f2e3db0754b96f546964ef4d13cf3caba3a3fc
+  revision: 93e3be5c6acf48f5829f0d93a288ddb4ee147309
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,6 +82,7 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.3)
     coderay (1.1.1)
+    concurrent-ruby (1.0.5)
     cube-ruby (0.0.3)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
@@ -100,7 +101,8 @@ GEM
     ffi (1.9.18)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.8.6)
+    i18n (0.9.0)
+      concurrent-ruby (~> 1.0)
     json (2.1.0)
     json_pure (2.1.0)
     libxml-ruby (3.0.0)
@@ -119,7 +121,7 @@ GEM
     mysql2 (0.4.9)
     net-http-persistent (2.9.4)
     netrc (0.11.0)
-    oj (3.3.5)
+    oj (3.3.9)
     omni_logger (0.1.4)
       logger
     pony (1.11)
