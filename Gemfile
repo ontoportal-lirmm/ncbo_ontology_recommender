@@ -4,6 +4,7 @@ gem 'rake', '~> 10.0'
 gem 'redis', '~> 3.0'
 gem 'minitest', '~> 4.0'
 gem 'cube-ruby', require: "cube"
+gem 'ffi', '< 1.9.22'
 
 # Development
 gem 'pry', group: :development

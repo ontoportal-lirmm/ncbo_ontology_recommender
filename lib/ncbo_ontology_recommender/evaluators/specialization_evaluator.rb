@@ -77,8 +77,12 @@ module OntologyRecommender
           subs = retrieve_latest_submissions
 
           subs.each do |acronym, sub|
-            cls_count = sub.class_count(@logger)
-            @metrics_hash[acronym] = cls_count
+            begin
+              cls_count = sub.class_count(@logger)
+              @metrics_hash[acronym] = cls_count
+            rescue Exception => e
+              @logger.error(e.message + "\n" + e.backtrace.join("\n\t"))
+            end
           end
         end
 
