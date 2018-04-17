@@ -37,8 +37,15 @@ module OntologyRecommender
               # removing hierarchySize from the calculation for now. There is a bug that returns hierarchySize as 0 for some annotations
               # Ex: neocortex in MA ontology
               anns.each { |ann| spec_score += get_annotation_score(ann) }
+
               # Normalization by ontology size
-              spec_score = (spec_score / Math.log10(num_classes)).round(3)
+              divisor = Math.log10(num_classes)
+
+              if divisor > 0
+                spec_score = (spec_score / divisor).round(3)
+              else
+                spec_score = 0
+              end
             end
 
             if spec_score > top_spec_score
