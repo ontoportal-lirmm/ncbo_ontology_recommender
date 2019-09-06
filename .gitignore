@@ -23,6 +23,9 @@ config/config.rb
 # Ignore RubyMine editor files
 .idea
 
+# Ignore jEnv files
+.java-version
+
 *.swp
 
 .DS_Store
