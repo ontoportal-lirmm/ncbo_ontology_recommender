@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
+  remote: https://github.com/ncbo/goo.git
   revision: 703736edcb1526d954ed6867c1ac1e748837ac71
   branch: staging
   specs:
@@ -15,8 +15,8 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 76c8e2ac9bfff6ada076948cd4232c3054cfb1dd
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 84e00c49d74fd77889c844ee3092886190f311c5
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,8 +26,8 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: fd1a2ea1abde1fa2320a0bf5a7f3bbd7fa0c3049
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 5fb41c820d0f9c1859cbd99a6c5a24a8cb664828
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -47,7 +47,7 @@ GIT
       rubyzip
 
 GIT
-  remote: git://github.com/ncbo/resource_index.git
+  remote: https://github.com/ncbo/resource_index.git
   revision: 24a7f14a6da4f4a0eaba1016ca5a378dfccd7441
   specs:
     ncbo_resource_index (0.0.1)
@@ -60,7 +60,7 @@ GIT
       typhoeus
 
 GIT
-  remote: git://github.com/ncbo/sparql-client.git
+  remote: https://github.com/ncbo/sparql-client.git
   revision: 3b7e2b14c83a6ffde90c6f7e78c3b5767c2e3a4c
   branch: staging
   specs:
@@ -105,7 +105,7 @@ GEM
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     json (2.3.0)
-    json_pure (2.2.0)
+    json_pure (2.3.0)
     libxml-ruby (3.1.0)
     logger (1.4.2)
     macaddr (1.7.2)
@@ -165,8 +165,6 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-darwin-16
-  x86_64-darwin-17
 
 DEPENDENCIES
   cube-ruby
@@ -183,4 +181,4 @@ DEPENDENCIES
   test-unit-minitest
 
 BUNDLED WITH
-   1.17.3
+   2.1.4
