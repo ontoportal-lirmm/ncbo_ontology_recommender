@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 8e89c6be4a921484a0b15aa1304cea1bf5c0377e
+  revision: 5b389057eb8898e00d6cc2f4f4dda093c8267fcd
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: d17abeed8a5f1bb7edb402719ea773fd3df342f8
+  revision: 722817503b3effe5ea16c2eb5c10d145808fb6d8
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 10b2a0970ce621091f2245be8c18c2941d7df0c7
+  revision: 15859fe491ec2f3790db04739c9939eb8a7cf909
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 2025f80c5520b09215a9ed543ae32b71a98e261d
+  revision: 2ab48e2b7b2aca5fd7ab99b9de36151bd7510de0
   branch: staging
   specs:
     sparql-client (1.0.1)
@@ -131,7 +131,7 @@ GEM
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rake (10.5.0)
