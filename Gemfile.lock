@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: b8175bc429c4e7be4447966ad03333beb17aa265
+  revision: dfd23166a66f7c7f0b359e901787f52d6e586e7d
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: ed79faf6363819973916fbef11ee7a5c3663feb9
+  revision: eb3042d75a349c07f7887d3effa6b355f12706f7
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -94,8 +94,8 @@ GEM
     elasticsearch-transport (2.0.0)
       faraday
       multi_json
-    ethon (0.12.0)
-      ffi (>= 1.3.0)
+    ethon (0.14.0)
+      ffi (>= 1.15.0)
     faraday (1.5.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -113,7 +113,7 @@ GEM
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.1.0)
     faraday-patron (1.0.0)
-    ffi (1.9.21)
+    ffi (1.15.3)
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
@@ -185,7 +185,7 @@ PLATFORMS
 
 DEPENDENCIES
   cube-ruby
-  ffi (< 1.9.22)
+  ffi
   goo!
   minitest (~> 4.0)
   ncbo_annotator!
