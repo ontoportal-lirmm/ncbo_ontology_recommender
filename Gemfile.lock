@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 52b49b00086b53533a723c2effc7ed445a6a6aab
-  branch: master
+  revision: 37996775b44ec673e7371b6f34220329c1026558
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4340ddf03f7b3e4df7124060f7a457d4571911ab
-  branch: master
+  revision: 3f9a10e86d9fc5313f13b9138bd84355af7f7108
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: edc3881c1afa77b6b849741ec2822c1049bbea43
-  branch: master
+  revision: f58bf7766e9a23fabd1380bdc628bad4735c5edf
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -96,7 +96,7 @@ GEM
       multi_json
     ethon (0.14.0)
       ffi (>= 1.15.0)
-    faraday (1.5.0)
+    faraday (1.7.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -104,6 +104,7 @@ GEM
       faraday-net_http (~> 1.0)
       faraday-net_http_persistent (~> 1.1)
       faraday-patron (~> 1.0)
+      faraday-rack (~> 1.0)
       multipart-post (>= 1.2, < 3)
       ruby2_keywords (>= 0.0.4)
     faraday-em_http (1.0.0)
@@ -111,8 +112,9 @@ GEM
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
     faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.1.0)
+    faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
+    faraday-rack (1.0.0)
     ffi (1.15.3)
     http-accept (1.7.0)
     http-cookie (1.0.4)
@@ -138,7 +140,7 @@ GEM
     mysql2 (0.5.2)
     net-http-persistent (2.9.4)
     netrc (0.11.0)
-    oj (3.12.0)
+    oj (2.18.5)
     omni_logger (0.1.4)
       logger
     pony (1.13.1)
@@ -163,9 +165,9 @@ GEM
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
     ruby-xxHash (0.4.0.1)
-    ruby2_keywords (0.0.4)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    sequel (5.46.0)
+    sequel (5.47.0)
     systemu (2.6.5)
     test-unit-minitest (0.9.1)
       minitest (~> 4.7)
@@ -190,6 +192,7 @@ DEPENDENCIES
   minitest (~> 4.0)
   ncbo_annotator!
   ncbo_resource_index!
+  oj (~> 2.0)
   ontologies_linked_data!
   pry
   rake (~> 10.0)
