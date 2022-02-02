@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 94a77bb64f3a5af72d909c597869e9923bac3831
-  branch: master
+  revision: a26b52dcfa87bd521f0de3005e41f9da26dc064f
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: c4562ccb355af5a664e23e079960b7a788763d18
-  branch: master
+  revision: e4d48a776a57545a4aeb079223d7c8ab05f088f7
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -94,46 +94,50 @@ GEM
     elasticsearch-transport (2.0.0)
       faraday
       multi_json
-    ethon (0.14.0)
+    ethon (0.15.0)
       ffi (>= 1.15.0)
-    faraday (1.7.0)
+    faraday (1.9.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0.1)
+      faraday-httpclient (~> 1.0)
+      faraday-multipart (~> 1.0)
       faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.1)
+      faraday-net_http_persistent (~> 1.0)
       faraday-patron (~> 1.0)
       faraday-rack (~> 1.0)
-      multipart-post (>= 1.2, < 3)
+      faraday-retry (~> 1.0)
       ruby2_keywords (>= 0.0.4)
     faraday-em_http (1.0.0)
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
+    faraday-multipart (1.0.3)
+      multipart-post (>= 1.2, < 3)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
-    ffi (1.15.3)
+    faraday-retry (1.0.3)
+    ffi (1.15.5)
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    json (2.5.1)
-    json_pure (2.5.1)
-    libxml-ruby (3.2.1)
-    logger (1.4.3)
+    json (2.6.1)
+    json_pure (2.6.1)
+    libxml-ruby (3.2.2)
+    logger (1.5.0)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     method_source (1.0.0)
-    mime-types (3.3.1)
+    mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0704)
-    mini_mime (1.1.0)
+    mime-types-data (3.2022.0105)
+    mini_mime (1.1.2)
     minitest (4.7.5)
     multi_json (1.15.0)
     multipart-post (2.1.1)
@@ -161,13 +165,13 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rsolr (2.3.0)
+    rsolr (2.4.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
-    ruby-xxHash (0.4.0.1)
+    ruby-xxHash (0.4.0.2)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    sequel (5.47.0)
+    sequel (5.53.0)
     systemu (2.6.5)
     test-unit-minitest (0.9.1)
       minitest (~> 4.7)
@@ -177,7 +181,7 @@ GEM
     tzinfo (0.3.60)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.7)
+    unf_ext (0.0.8)
     uuid (2.3.9)
       macaddr (~> 1.0)
 
@@ -187,6 +191,7 @@ PLATFORMS
 
 DEPENDENCIES
   cube-ruby
+  faraday (~> 1.9)
   ffi
   goo!
   minitest (~> 4.0)

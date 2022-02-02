@@ -9,6 +9,7 @@ gem 'minitest', '~> 4.0'
 gem 'cube-ruby', require: "cube"
 gem 'ffi'
 gem 'oj', '~> 2.0'
+gem 'faraday', '~> 1.9'
 
 # Development
 gem 'pry', group: :development
