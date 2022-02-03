@@ -5,9 +5,6 @@ gem 'ffi'
 gem 'minitest', '~> 4.0'
 gem 'rake', '~> 10.0'
 gem 'redis', '~> 3.0'
-gem 'minitest', '~> 4.0'
-gem 'cube-ruby', require: "cube"
-gem 'ffi'
 gem 'oj', '~> 2.0'
 gem 'faraday', '~> 1.9'
 
