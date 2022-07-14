@@ -1,22 +1,21 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 2249d86c00309b3514c6f9559ea2318cd6178575
+  revision: fd7d45cb862c5c2c1833b64a5c8c14154384edc2
   branch: master
   specs:
     goo (0.0.2)
-      addressable (= 2.3.5)
+      addressable (~> 2.8)
       pry
       rdf (= 1.0.8)
       redis
       rest-client
       rsolr
       sparql-client
-      systemu
       uuid
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: b1593ae6c67dc1b48d114e7eafc65b719dc0e6d7
+  revision: d053a081b3d605671d106c7becbc39360b730b14
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: fc90752c9476cdbd06b102577aec2f9110fbce8d
+  revision: 5d0176d97d740ab5c7213980448019e44cf5574c
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -37,7 +36,6 @@ GIT
       json
       libxml-ruby
       multi_json
-      ncbo_resource_index
       oj
       omni_logger
       pony
@@ -45,19 +43,6 @@ GIT
       rack-test
       rsolr
       rubyzip
-
-GIT
-  remote: https://github.com/ncbo/resource_index.git
-  revision: 24a7f14a6da4f4a0eaba1016ca5a378dfccd7441
-  specs:
-    ncbo_resource_index (0.0.1)
-      elasticsearch (= 2.0.0)
-      mysql2 (= 0.5.2)
-      pony
-      ref
-      ruby-xxHash
-      sequel
-      typhoeus
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
@@ -78,24 +63,15 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
-    addressable (2.3.5)
-    bcrypt (3.1.16)
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
+    bcrypt (3.1.18)
     builder (3.2.4)
     coderay (1.1.3)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     cube-ruby (0.0.3)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (2.0.0)
-      elasticsearch-api (= 2.0.0)
-      elasticsearch-transport (= 2.0.0)
-    elasticsearch-api (2.0.0)
-      multi_json
-    elasticsearch-transport (2.0.0)
-      faraday
-      multi_json
-    ethon (0.15.0)
-      ffi (>= 1.15.0)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -112,8 +88,8 @@ GEM
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
@@ -121,14 +97,14 @@ GEM
     faraday-retry (1.0.3)
     ffi (1.15.5)
     http-accept (1.7.0)
-    http-cookie (1.0.4)
+    http-cookie (1.0.5)
       domain_name (~> 0.5)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    json (2.6.1)
-    json_pure (2.6.1)
-    libxml-ruby (3.2.2)
-    logger (1.5.0)
+    json (2.6.2)
+    json_pure (2.6.2)
+    libxml-ruby (3.2.3)
+    logger (1.5.1)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     mail (2.7.1)
@@ -140,8 +116,7 @@ GEM
     mini_mime (1.1.2)
     minitest (4.7.5)
     multi_json (1.15.0)
-    multipart-post (2.1.1)
-    mysql2 (0.5.2)
+    multipart-post (2.2.3)
     net-http-persistent (2.9.4)
     netrc (0.11.0)
     oj (2.18.5)
@@ -152,14 +127,14 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    rack (2.2.3)
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    public_suffix (4.0.7)
+    rack (2.2.4)
+    rack-test (2.0.2)
+      rack (>= 1.3)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
     redis (3.3.5)
-    ref (2.0.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -171,23 +146,19 @@ GEM
     ruby-xxHash (0.4.0.2)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    sequel (5.54.0)
     systemu (2.6.5)
     test-unit-minitest (0.9.1)
       minitest (~> 4.7)
     thread_safe (0.3.6)
-    typhoeus (1.4.0)
-      ethon (>= 0.9.0)
     tzinfo (0.3.60)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8)
+    unf_ext (0.0.8.2)
     uuid (2.3.9)
       macaddr (~> 1.0)
 
 PLATFORMS
-  ruby
-  x86_64-darwin-17
+  x86_64-darwin-21
 
 DEPENDENCIES
   cube-ruby
@@ -196,7 +167,6 @@ DEPENDENCIES
   goo!
   minitest (~> 4.0)
   ncbo_annotator!
-  ncbo_resource_index!
   oj (~> 2.0)
   ontologies_linked_data!
   pry
@@ -206,4 +176,4 @@ DEPENDENCIES
   test-unit-minitest
 
 BUNDLED WITH
-   2.1.4
+   2.3.14
