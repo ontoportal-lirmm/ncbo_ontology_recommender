@@ -150,7 +150,7 @@ GEM
     test-unit-minitest (0.9.1)
       minitest (~> 4.7)
     thread_safe (0.3.6)
-    tzinfo (0.3.60)
+    tzinfo (0.3.61)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
@@ -159,6 +159,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   cube-ruby
