@@ -3,8 +3,6 @@ require 'ncbo_annotator'
 require_relative '../lib/ncbo_ontology_recommender'
 require_relative '../config/config'
 
-require 'test/unit'
-
 # Check to make sure you want to run if not pointed at localhost
 safe_host = Regexp.new(/localhost|-ut|ncbo-dev*|ncbo-unittest*/)
 unless LinkedData.settings.goo_host.match(safe_host) &&
