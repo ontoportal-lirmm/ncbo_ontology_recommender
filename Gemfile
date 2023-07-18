@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'cube-ruby', require: 'cube'
-gem 'faraday', '~> 1.9'
+#gem 'cube-ruby', require: 'cube'
+gem 'cube-ruby'
+gem 'faraday', '~> 2.0'
 gem 'ffi'
 gem 'oj', '~> 3.0'
 gem 'rake', '~> 10.0'
