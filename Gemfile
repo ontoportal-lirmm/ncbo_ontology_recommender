@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-#gem 'cube-ruby', require: 'cube'
 gem 'cube-ruby'
 gem 'faraday', '~> 2.0'
 gem 'ffi'
