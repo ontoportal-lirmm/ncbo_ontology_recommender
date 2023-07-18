@@ -3,7 +3,22 @@ require 'ncbo_annotator'
 require_relative '../lib/ncbo_ontology_recommender'
 require_relative '../config/config'
 
-require 'test/unit'
+if ENV['COVERAGE'] == 'true' || ENV['CI'] == 'true'
+  require 'simplecov'
+  require 'simplecov-cobertura'
+  # https://github.com/codecov/ruby-standard-2
+  # Generate HTML and Cobertura reports which can be consumed by codecov uploader
+  SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::CoberturaFormatter
+  ])
+  SimpleCov.start do
+    add_filter '/test/'
+    add_filter 'app.rb'
+    add_filter 'init.rb'
+    add_filter '/config/'
+  end
+end
 
 # Check to make sure you want to run if not pointed at localhost
 safe_host = Regexp.new(/localhost|-ut|ncbo-dev*|ncbo-unittest*/)

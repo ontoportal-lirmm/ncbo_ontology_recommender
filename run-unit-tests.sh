@@ -3,8 +3,7 @@
 #
 # add config for unit testing
 [ -f config/config.rb ] || cp config/config.test.rb config/config.rb
-docker-compose build
-#docker-compose up --exit-code-from unit-test
+docker compose build
 
-docker-compose run --rm unit-test bundle exec rake test TESTOPTS='-v' --trace
-docker-compose kill
+docker compose run --rm ruby bundle exec rake test TESTOPTS='-v'
+docker compose stop

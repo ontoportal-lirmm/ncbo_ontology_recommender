@@ -1,11 +1,16 @@
 version: '3.8'
 
 services:
-  unit-test:
-    build: .
-    #volumes:
-    #  - .:/srv/ontoportal/ncbo_ontology_recommender
+  ruby:
+    build:
+      context: .
+      args:
+        RUBY_VERSION: '2.7'
+    volumes:
+      - bundle:/bundle
+      - .:/srv/ontoportal/ncbo_ontology_recommender
     environment:
+      - BUNDLE_PATH=/bundle
       - GOO_BACKEND_NAME=4store
       - GOO_PORT=9000
       - GOO_HOST=4store-ut
@@ -13,7 +18,7 @@ services:
       - REDIS_PORT=6379
       - SOLR_HOST=solr-ut
       - MGREP_HOST=mgrep-ut
-      - MGREP_PORT=55555
+      - MGREP_PORT=55556
     depends_on:
       - solr-ut
       - redis-ut
@@ -22,18 +27,22 @@ services:
     command: "bundle exec rake test TESTOPTS='-v'"
 
   solr-ut:
-    image: ontoportal/solr-ut:0.1
+    image: ontoportal/solr-ut:0.0.2
 
   redis-ut:
     image: redis
 
   mgrep-ut:
-    image: ontoportal/mgrep-ncbo:0.1
+    image: ontoportal/mgrep:0.0.2
+    platform: linux/amd64
 
   4store-ut:
     image: bde2020/4store
+    platform: linux/amd64
     command: >
       bash -c "4s-backend-setup --segments 4 ontoportal_kb
       && 4s-backend ontoportal_kb
       && 4s-httpd -D -s-1 -p 9000 ontoportal_kb"
 
+volumes:
+  bundle:
