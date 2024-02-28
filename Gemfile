@@ -10,9 +10,9 @@ gem 'request_store'
 gem 'jwt'
 
 # NCBO
-gem 'goo', github: 'ontoportal-lirmm/goo', branch: 'master'
+gem 'goo', github: 'ontoportal-lirmm/goo', branch: 'development'
 gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.git', branch: 'master'
-gem 'ontologies_linked_data', github: 'ontoportal-lirmm/ontologies_linked_data', branch: 'master'
+gem 'ontologies_linked_data', github: 'ontoportal-lirmm/ontologies_linked_data', branch: 'development'
 gem 'sparql-client', github: 'ontoportal-lirmm/sparql-client', branch: 'master'
 
 group :development do
