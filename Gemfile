@@ -6,12 +6,14 @@ gem 'ffi'
 gem 'oj', '~> 3.0'
 gem 'rake', '~> 10.0'
 gem 'redis'
+gem 'request_store'
+gem 'jwt'
 
 # NCBO
-gem 'goo', github: 'ncbo/goo', branch: 'master'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
+gem 'goo', github: 'ontoportal-lirmm/goo', branch: 'master'
+gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.git', branch: 'master'
+gem 'ontologies_linked_data', github: 'ontoportal-lirmm/ontologies_linked_data', branch: 'master'
+gem 'sparql-client', github: 'ontoportal-lirmm/sparql-client', branch: 'master'
 
 group :development do
   gem 'simplecov'
