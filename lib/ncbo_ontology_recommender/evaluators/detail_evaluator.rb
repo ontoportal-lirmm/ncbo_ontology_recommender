@@ -92,7 +92,7 @@ module OntologyRecommender
         params["fq"] << " AND #{get_quoted_field_query_param(class_ids, "OR", "resource_id")}"
         params["rows"] = 99999
         # Replace fake query with wildcard
-        resp = LinkedData::Models::Class.search("*:*", params)
+        resp = LinkedData::Models::Class.submit_search_query("*:*", params)
         populated_classes = []
         resp["response"]["docs"].each do |doc|
           doc = doc.symbolize_keys
