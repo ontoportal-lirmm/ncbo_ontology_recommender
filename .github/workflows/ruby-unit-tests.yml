@@ -13,12 +13,14 @@ jobs:
       run: cp config/config.test.rb config/config.rb
     - name: Build docker compose
       run: docker compose build
-    - name: Run unit tests
+    - name: Run docker
       # unit tests are run inside a container
       # http://docs.codecov.io/docs/testing-with-docker
       run: |
         ci_env=`bash <(curl -s https://codecov.io/env)`
-        docker compose run $ci_env -e CI --rm ruby bundle exec rake test TESTOPTS='-v'
+        docker compose up
+    - name: Run unit tests
+      run : bundle exec rake test  TESTOPTS="-v"
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
